@@ -24,4 +24,10 @@ Route::get('/edit','RoomService@getEdit');
 
 Route::get('/repeal','RoomService@getRepeal');
 
-Route::post('/login', 'Auth/LoginController@postLogin');
+
+Route::get('test',function(){
+
+    $user = \App\Models\User::find('admin');
+    dd(Auth::guard()->attempt(['email'=>'admin@admin.com','password'=>bcrypt('p4ssw0rd')])) ;
+});
+Route::post('/login', 'HomeController@postLogin');

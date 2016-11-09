@@ -10,7 +10,8 @@ class HomeController extends Controller
 
     use AuthenticatesUsers ;
 
-    protected $redirectTo = '/' ;
+    protected $redirectTo = '/test' ;
+    
     public function __construct()
     {
 

@@ -5,10 +5,9 @@
 <div class="aside"><h1>LAB SERVICE</h1></div><br>
 <!-- เมนูข้างๆ -->
 	<div class="row">
-        @if(Auth::check())
+        @if(!Auth::check())
             <div class="col-3 col-m-3 menu">
               <ul>
-
                 <form action="{{ url('login') }}" class="ui form" method="post">
                     {{ csrf_field() }}
 
@@ -32,7 +31,7 @@
 					  <!-- <img class="card-img-top" src="BG/woman.png" alt="Card image cap"> -->
 					  <div class="card-block">
 					    <h4 class="card-title">ยินดีต้อนรับเข้าสู่ระบบ ...</h4>
-					    <p class="card-text">Somsri</p>
+					    <p class="card-text">{{ Auth::user()->firstname }}</p>
 					  </div><br>
 					  <ul class="list-group list-group-flush">
 					  	<li class="list-group-item">
