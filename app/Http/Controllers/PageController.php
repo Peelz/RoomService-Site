@@ -8,7 +8,6 @@ class PageController extends BaseController
 {
     protected $view ;
 
-    ฮ
 
 
 }

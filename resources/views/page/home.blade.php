@@ -1,56 +1,25 @@
 @extends('layouts.page')
 
-@section('content')
+@push('addPlugin')
 
-<div class="aside"><h1>LAB SERVICE</h1></div><br>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <!-- graph -->
+    <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+    <script src="https://www.amcharts.com/lib/3/serial.js"></script>
+    <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+    <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+    <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+    <script src='http://fullcalendar.io/js/fullcalendar-2.2.3/lib/moment.min.js'></script>
+    <script src='http://fullcalendar.io/js/fullcalendar-2.2.3/fullcalendar.min.js'></script>
+	<link rel='stylesheet' href='http://fullcalendar.io/js/fullcalendar-2.2.3/fullcalendar.css' />
+
+@endpush
+
+@section('content')
 <!-- เมนูข้างๆ -->
 	<div class="row">
-        @if(!Auth::check())
-            <div class="col-3 col-m-3 menu">
-              <ul>
-                <form action="{{ url('login') }}" class="ui form" method="post">
-                    {{ csrf_field() }}
-
-                  <div class="field"><label for=""><br>ID :</label><input type="text" name="id"></div>
-                  <div class="field"><label for="">Password :</label><input type="Password" namne="password"></div>
-                  <div class="inline field">
-                      <div class="ui checkbox">
-                         <input type="checkbox" tabindex="0">
-                         <label>จดจำรหัสผ่าน</label>
-                      </div>
-                       <button class="ui green button" type="submit">เข้าสู่ระบบ</button>
-
-                  </div>
-                </form>
-              </ul>
-            </div>
-
-        @else
-            <div class="col-3 col-m-3 menu">
-				<div class="card">
-					  <!-- <img class="card-img-top" src="BG/woman.png" alt="Card image cap"> -->
-					  <div class="card-block">
-					    <h4 class="card-title">ยินดีต้อนรับเข้าสู่ระบบ ...</h4>
-					    <p class="card-text">{{ Auth::user()->firstname }}</p>
-					  </div><br>
-					  <ul class="list-group list-group-flush">
-					  	<li class="list-group-item">
-				    		<a href="#" class="item "><i class="write icon"></i>แก้ไขข้อมูลส่วนตัว</a>
-				    	</li>
-					    <li class="list-group-item">
-				    		<a href="room-request.html" class="item "><i class="building icon"></i>ขอใช้ห้อง</a>
-				    	</li>
-					    <li class="list-group-item">
-				    		<a href="edit.html" class="item"><i class="configure icon"></i>แก้ไข/ยกเลิก</a>
-				   		</li>
-					    <li class="list-group-item">
-				    		<a href="#" class="item"><i class="sign out icon"></i>ออกจากระบบ</a>
-				    	</li>
-					  </ul>
-				</div>
-    		</div>
-        @endif
-
+    @include('layouts._partial.side-menu')
 <!-- ปฎิทิน -->
 		 <div class="col-9 col-m-9">
 			<div class="container">
@@ -106,36 +75,23 @@
 					    </tr>
 					  </thead>
 					  <tbody >
-						<tr>
-							<td>Lorem ipsum dolor sit amet</td>
-							<td>Lorem ipsum dolor sit amet</td>
-							<td>Lorem ipsum dolor sit amet</td>
-							<td>Lorem ipsum dolor sit amet</td>
-							<td>Lorem ipsum dolor sit amet</td>
-							<td>Lorem ipsum dolor sit amet</td>
-							<td>Lorem ipsum dolor sit amet</td>
-							<td>Lorem ipsum dolor sit amet</td>
-						</tr>
-						<tr>
-							<td>Lorem ipsum dolor sit amet</td>
-							<td>Lorem ipsum dolor sit amet</td>
-							<td>Lorem ipsum dolor sit amet</td>
-							<td>Lorem ipsum dolor sit amet</td>
-							<td>Lorem ipsum dolor sit amet</td>
-							<td>Lorem ipsum dolor sit amet</td>
-							<td>Lorem ipsum dolor sit amet</td>
-							<td>Lorem ipsum dolor sit amet</td>
-						</tr>
-						<tr>
-							<td>Lorem ipsum dolor sit amet</td>
-							<td>Lorem ipsum dolor sit amet</td>
-							<td>Lorem ipsum dolor sit amet</td>
-							<td>Lorem ipsum dolor sit amet</td>
-							<td>Lorem ipsum dolor sit amet</td>
-							<td>Lorem ipsum dolor sit amet</td>
-							<td>Lorem ipsum dolor sit amet</td>
-							<td>Lorem ipsum dolor sit amet</td>
-						</tr>
+                          @if( $data['roomBooking'] )
+                              @foreach($data['roomBooking'] as $booking)
+                                  <tr>
+                                      <td>{{ $booking->start_time.' - '.$booking->end_time}}</td>
+                                      <td>{{ $booking->room->room_id }}</td>
+                                      <td>{{ $booking->room->build }}</td>
+                                      <td>{{ $booking->user->user_id }}</td>
+                                      <td>{{ $booking->subject->sub_id }}</td>
+                                      <td>{{ $booking->subject->name}}</td>
+                                      <td>{{ $booking->sec}}</td>
+                                      <td>{{ $booking->note}}</td>
+                                  </tr>
+                              @endforeach
+                          @endif
+
+
+
 					  </tbody>
 					</table>
 				</div>
@@ -229,10 +185,7 @@
 
 
 
-<!-- ส่วนล่าง -->
-	<div class="footer">
-	<p>Resize the browser window to see how the content respond to the resizing.</p>
-	</div>
+
 
 
 @endsection

@@ -11,23 +11,24 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 
 Route::get('/','HomeController@index') ;
 
-Route::get('/booking','RoomService@getBooking');
-
-Route::get('/edit','RoomService@getEdit');
-
-Route::get('/repeal','RoomService@getRepeal');
 
 
-Route::get('test',function(){
 
-    $user = \App\Models\User::find('admin');
-    dd(Auth::guard()->attempt(['email'=>'admin@admin.com','password'=>bcrypt('p4ssw0rd')])) ;
-});
+Route::get('/booking/repeal','BookingController@getRepeal');
+Route::post('/booking/repeal','BookingController@postRepeal');
+
+Route::get('/booking/form','BookingController@getBooking');
+Route::post('/booking/form','BookingController@postBooking');
+
+Route::get('/booking/list','BookingController@getList');
+
+Route::get('/booking/edit/{booking_id}','BookingController@getShowAndEditBooking');
+Route::post('/booking/edit','BookingController@showAndEdit');
+
+Route::get('/logout', 'HomeController@getLogout');
+
+
 Route::post('/login', 'HomeController@postLogin');

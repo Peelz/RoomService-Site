@@ -14,8 +14,10 @@ class CreateSubjectEntity extends Migration
     public function up()
     {
         Schema::create('subject_entity',function(Blueprint $table){
-            $table->string('sub_id') ;
+            $table->unsignedInteger('sub_id') ;
             $table->string('name') ;
+            $table->primary('sub_id');
+            $table->timestamps();
         });
     }
 

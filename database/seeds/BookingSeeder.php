@@ -15,6 +15,7 @@ class BookingSeeder extends Seeder
 
         $faker = Faker\Factory::create() ;
         $dt = Carbon\Carbon::now() ;
+
         for ($i=0; $i < 50; $i++) {
 
             $start_time = $faker->time();
@@ -27,8 +28,9 @@ class BookingSeeder extends Seeder
                 'date' => $faker->dateTimeBetween($startDate='-2 years', $endDate='+1 years'),
                 'start_time' => $start_time,
                 'end_time' => $end_time, // +3 hour
-                'user_id' => 'admin',
-                'room_id' => $faker->randomElement($array = array (15304,15305)),
+                'subject_id'=> App\Models\Subject::all()->random(1)->sub_id,
+                'user_id' => App\Models\User::first()->entity_id,
+                'room_id' => App\Models\Classroom::all()->random(1)->room_id,
                 'created_at'=> $dt ,
                 'updated_at' => $dt
             ]);

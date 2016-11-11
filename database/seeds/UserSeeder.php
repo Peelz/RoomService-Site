@@ -11,12 +11,14 @@ class UserSeeder extends Seeder
     public function run()
     {
         DB::table('user_entity')->delete();
+
         DB::table('user_entity')->insert([
             'user_id' => 'admin',
+            'password' => bcrypt('password'),
             'firstname' =>'Anucha',
             'lastname' => 'Maitripirom',
             'email' => 'admin@admin.com',
-            'password' => bcrypt('p4ssw0rd')
+
         ]);
 
 
