@@ -16,8 +16,8 @@ class CreateReservations extends Migration
         Schema::dropIfExists('classroom_booking');
 
         Schema::create('classroom_booking',function(Blueprint $table){
-            $table->increments('id');
-            $table->string('user_id') ;
+            $table->increments('entity_id');
+            $table->unsignedInteger('user_id') ;
             $table->unsignedInteger('room_id') ;
             $table->unsignedInteger('subject_id') ;
             $table->unsignedInteger('quan_nisit');
@@ -27,7 +27,7 @@ class CreateReservations extends Migration
             $table->text('note');
             $table->timestamps() ;
 
-            $table->foreign('user_id')->references('user_id')->on('user_entity')->onDelete('cascade');
+            $table->foreign('user_id')->references('entity_id')->on('user_entity')->onDelete('cascade');
             $table->foreign('room_id')->references('room_id')->on('classroom_entity')->onDelete('cascade') ;
             $table->foreign('subject_id')->references('sub_id')->on('subject_entity')->onDelete('cascade');
         });

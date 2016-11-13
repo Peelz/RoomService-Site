@@ -30,6 +30,6 @@ class RoomBooking extends Model
     }
 
     public function user(){
-        return $this->hasOne('\App\Models\User','entity_id','user_id');
+        return $this->hasOne('\App\Models\User','user_id','user_id');
     }
 }

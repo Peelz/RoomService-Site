@@ -16,6 +16,7 @@ class CreateUserEntity extends Migration
         Schema::dropIfExists('user_entity');
 
         Schema::create('user_entity', function (Blueprint $table) {
+            $table->increments('entity_id');
             $table->string('user_id');
             $table->string('password');
             $table->string('email')->unique();
@@ -25,7 +26,7 @@ class CreateUserEntity extends Migration
             $table->boolean('status');
             $table->rememberToken();
             $table->timestamps();
-            $table->primary(['user_id']);
+            // $table->primary(['id','user_id']);
 
 
         });

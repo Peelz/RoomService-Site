@@ -13,11 +13,14 @@ class CreateSubjectEntity extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('subject_entity');
+
         Schema::create('subject_entity',function(Blueprint $table){
-            $table->unsignedInteger('sub_id') ;
+            $table->unsignedInteger('sub_id')->unique() ;
             $table->string('name') ;
-            $table->primary('sub_id');
             $table->timestamps();
+            $table->primary('sub_id');
+
         });
     }
 

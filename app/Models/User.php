@@ -14,11 +14,11 @@ class User extends Authenticatable
 
     protected $table = 'user_entity'  ;
 
-    protected $fillable = ['entity_id','user_id','email','firstname','lastname','password'];
+    protected $fillable = ['user_id','email','firstname','lastname','password','status','role'];
 
     protected $hidden = ['password', 'remember_token'];
 
-    protected $primaryKey = 'entity_id';
+    protected $primaryKey = 'user_id';
     //
     //
     public function getAuthIdentifier()

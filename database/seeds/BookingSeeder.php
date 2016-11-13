@@ -22,7 +22,6 @@ class BookingSeeder extends Seeder
             $end_time = $start_time ;
             $end_time[1] = $end_time[1]+3 ;
             DB::table('classroom_booking')->insert([
-                'sec' => $faker->numerify('8##') ,
                 'quan_nisit'=> $faker->numberBetween($min=20,$max=50),
                 'note' => 'Test Database',
                 'date' => $faker->dateTimeBetween($startDate='-2 years', $endDate='+1 years'),
