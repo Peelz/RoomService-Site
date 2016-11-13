@@ -1,6 +1,14 @@
 @extends('layouts.page')
 
 @push('addPlugin')
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <script type="text/javascript">
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    </script>
     <link rel="stylesheet" href="/timerpicker/include/ui-1.10.0/ui-lightness/jquery-ui-1.10.0.custom.min.css" type="text/css" />
     <link rel="stylesheet" href="/timerpicker/jquery.ui.timepicker.css?v=0.3.3" type="text/css" />
 
@@ -10,6 +18,8 @@
     <script type="text/javascript" src="/timerpicker/include/ui-1.10.0/jquery.ui.position.min.js"></script>
 
     <script type="text/javascript" src="/timerpicker/jquery.ui.timepicker.js?v=0.3.3"></script>
+    {{-- <script type="text/javascript" src="/css/components/search.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/css/components/search.min.css" charset="utf-8"></script> --}}
 
     <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
 @endpush
@@ -36,7 +46,15 @@
     							  	<tbody >
     									<tr>
     									  <td>รหัสวิชา</td>
-    									  <td><input type="text" name="sub_id" value=""></td>
+    									  <td>
+                                              <div class="ui search">
+                                                  <div class="ui icon input">
+                                                    <input class="prompt" type="text" placeholder="Search countries...">
+                                                    <i class="search icon"></i>
+                                                  </div>
+                                                  <div class="results"></div>
+                                              </div>
+                                          </td>
     									</tr>
     									<tr>
     									  <td>หมู่เรียน</td>
@@ -77,7 +95,7 @@
     											<i class="time Outline icon"></i>
     										</div>
     										</td>
-                                            <script>
+                                              <script>
                                                 $('#start_time').timepicker();
                                                 $('#end_time').timepicker();
                                             </script>
@@ -95,7 +113,7 @@
     												<option value="3">3</option>
     												<option value="4">4</option>
     											</select>
-    										</td>
+    										</td>``
     									</tr>
     									<tr>
     										<td>หมายเหตุ</td>
@@ -107,6 +125,24 @@
                                 <button class="ui button" type="submit">ยืนยัน</button>
 
     						</form>
+
+                            <script>
+                            $('.ui.search')
+                              .search({
+                                apiSettings: {
+                                  metadata: {
+                                    url: '//api.github.com/search/repositories?q={query}',
+                                  }
+                                },
+                                fields: {
+                                  results : 'items',
+                                  title   : 'name',
+                                  url     : 'html_url'
+                                },
+                                minCharacters : 3
+                              })
+                            ;
+                            </script>
 
     					</div>
     			</div>

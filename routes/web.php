@@ -15,20 +15,45 @@
 Route::get('/','HomeController@index') ;
 
 
+Route::get('/test',function(){
+    $faker = Faker\Factory::create();
+    $data = array(
+        'user_id' => $faker->word,
+        'password' => 123123,
+        'email' => $faker->email,
+        'firstname' => $faker->firstName,
+        'lastname' => $faker->lastName,
+        'created_at' => Carbon\Carbon::now()->format('Y-m-d H:i:s'),
+        'updated_at' => Carbon\Carbon::now()->format('Y-m-d H:i:s'),
+    );
 
+    $user = new App\Models\User ;
 
-Route::get('/booking/repeal','BookingController@getRepeal');
-Route::post('/booking/repeal','BookingController@postRepeal');
+    $user->fill($data);
+    $user->save();
 
-Route::get('/booking/form','BookingController@getBooking');
-Route::post('/booking/form','BookingController@postBooking');
+    dd($user);
 
-Route::get('/booking/list','BookingController@getList');
-
-Route::get('/booking/edit/{booking_id}','BookingController@getShowAndEditBooking');
-Route::post('/booking/edit','BookingController@showAndEdit');
+});
 
 Route::get('/logout', 'HomeController@getLogout');
-
-
 Route::post('/login', 'HomeController@postLogin');
+
+Route::group(['middleware' => 'web'] ,function(){
+
+    Route::get('/booking/create','BookingController@showForm');
+    Route::post('/booking/create','BookingController@store');
+    Route::get('/booking/list','BookingController@getList');
+    Route::get('/booking/edit/{booking_id}','BookingController@getEdit');
+    Route::post('/booking/edit','BookingController@posttEdit');
+    Route::post('/booking/delete','BookingController@destroy');
+
+    Route::post('boom/api','BookingController@apiAjax');
+
+    Route::get('/room/create','RoomController@showForm');
+    Route::post('room/create','RoomController@store');
+    Route::get('/room/edit/{id}','RoomController@edit');
+    Route::get('/room/list','RoomController@getList');
+
+
+});
