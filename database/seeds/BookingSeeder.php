@@ -28,7 +28,7 @@ class BookingSeeder extends Seeder
                 'start_time' => $start_time,
                 'end_time' => $end_time, // +3 hour
                 'subject_id'=> App\Models\Subject::all()->random(1)->sub_id,
-                'user_id' => App\Models\User::first()->entity_id,
+                'user_id' => App\Models\User::all()->random(1)->entity_id,
                 'room_id' => App\Models\Classroom::all()->random(1)->room_id,
                 'created_at'=> $dt ,
                 'updated_at' => $dt

@@ -14,7 +14,8 @@ class CreateRoomEntity extends Migration
     public function up()
     {
         Schema::create('classroom_entity',function(Blueprint $table){
-            $table->unsignedInteger('room_id')->unique() ;
+            $table->string('room_id')->unique() ;
+            $table->string('room_name') ;
             $table->unsignedInteger('build') ;
             $table->timestamps();
 

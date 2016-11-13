@@ -18,7 +18,7 @@ class CreateReservations extends Migration
         Schema::create('classroom_booking',function(Blueprint $table){
             $table->increments('entity_id');
             $table->unsignedInteger('user_id') ;
-            $table->unsignedInteger('room_id') ;
+            $table->string('room_id') ;
             $table->unsignedInteger('subject_id') ;
             $table->unsignedInteger('quan_nisit');
             $table->date('date');

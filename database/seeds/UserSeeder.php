@@ -12,6 +12,7 @@ class UserSeeder extends Seeder
     {
         DB::table('user_entity')->delete();
 
+        $faker = Faker\Factory::Create() ;
         DB::table('user_entity')->insert([
             'user_id' => 'admin',
             'password' => bcrypt('password'),
@@ -23,6 +24,18 @@ class UserSeeder extends Seeder
 
 
         ]);
+
+        for ($i=0; $i < 10; $i++) {
+            DB::table('user_entity')->insert([
+                'user_id' => $faker->word,
+                'password' => bcrypt('password'),
+                'firstname' => $faker->firstName,
+                'lastname' => $faker->lastname,
+                'email' => $faker->email,
+                'status' => 1 ,
+                'role' => 'instructor',
+            ]);
+        }
 
 
     }

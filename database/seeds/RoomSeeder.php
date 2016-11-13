@@ -17,6 +17,7 @@ class RoomSeeder extends Seeder
         for ($i=0; $i < 3; $i++) {
             DB::table('classroom_entity')->insert([
                 'room_id' => 15304+$i,
+                'room_name' => '',
                 'build' => 15,
             ]);
         }
