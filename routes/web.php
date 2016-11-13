@@ -39,8 +39,13 @@ Route::get('/test',function(){
 Route::get('/logout', 'HomeController@getLogout');
 Route::post('/login', 'HomeController@postLogin');
 
+/* Api */
+Route::post('boom/api','BookingController@apiAjax');
+
+/* Authenticated */
 Route::group(['middleware' => 'web'] ,function(){
 
+    /* User permission */
     Route::get('/booking/create','BookingController@showForm');
     Route::post('/booking/create','BookingController@store');
     Route::get('/booking/list','BookingController@getList');
@@ -48,8 +53,21 @@ Route::group(['middleware' => 'web'] ,function(){
     Route::post('/booking/edit','BookingController@posttEdit');
     Route::post('/booking/delete','BookingController@destroy');
 
-    Route::post('boom/api','BookingController@apiAjax');
 
+
+
+
+    //### admin permission ###//
+    //
+    // See all Booking
+    // Edit non-Owner Booking
+    //
+    // Create new Subject
+    // Edit Subject
+    // Delete Subject
+
+
+    /* Room */
     Route::get('/room/create','RoomController@showForm');
     Route::post('room/create','RoomController@store');
     Route::get('/room/edit/{id}','RoomController@edit');
