@@ -16,15 +16,22 @@ class BookingSeeder extends Seeder
         $faker = Faker\Factory::create() ;
         $dt = Carbon\Carbon::now() ;
 
-        for ($i=0; $i < 50; $i++) {
+        for ($i=0; $i < 3; $i++) {
 
-            $start_time = $faker->time();
+            $start_time = $faker->time($format = 'H:i');
+            $ex = explode( ':', $start_time );
+            if( intval($ex[1]) > 30){
+                $start_time = $ex[0].':'.'30' ;
+            }else{
+                $start_time = $ex[0].':'.'00';
+            }
             $end_time = $start_time ;
             $end_time[1] = $end_time[1]+3 ;
+            $randDate = $faker->dateTimeBetween($startDate='-2 years', $endDate='+1 years');
             DB::table('classroom_booking')->insert([
                 'quan_nisit'=> $faker->numberBetween($min=20,$max=50),
                 'note' => 'Test Database',
-                'date' => $faker->dateTimeBetween($startDate='-2 years', $endDate='+1 years'),
+                'date' => '2016-11-15',
                 'start_time' => $start_time,
                 'end_time' => $end_time, // +3 hour
                 'subject_id'=> App\Models\Subject::all()->random(1)->sub_id,

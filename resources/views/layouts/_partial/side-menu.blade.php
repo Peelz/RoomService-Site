@@ -4,6 +4,10 @@
 		{{ $error }}
 	@endforeach
 @endif
+@push('addPlugin')
+	<link rel="stylesheet" type="text/css" href="{{ asset('css/components/sidebar.min.css')}}">
+
+@endpush
 @if(!Auth::check())
 	<div class="col-3 col-m-3 menu">
 	  <ul>
@@ -24,38 +28,40 @@
 	  </ul>
 	</div>
 
+
 @else
 	<div class="col-3 col-m-3 menu">
-		<div class="card">
-			  <!-- <img class="card-img-top" src="BG/woman.png" alt="Card image cap"> -->
-			  <div class="card-block">
-				<h4 class="card-title">ยินดีต้อนรับเข้าสู่ระบบ</h4>
-				<p class="card-text">{{ Auth::user()->firstname }}</p>
-			  </div><br>
-			  <ul class="list-group list-group-flush">
-				<li class="list-group-item">
-					<a href="{{ url('/me/edit') }}" class="item ">แก้ไขข้อมูลส่วนตัว</a>
-				</li>
-				<li class="list-group-item">
-					<a href="{{ url('/booking/form')}}" class="item ">ขอใช้ห้อง</a>
-				</li>
-				<li class="list-group-item">
-					<a href="{{ url('/booking/list')}}" class="item ">ประวัติการจองห้อง</a>
-				</li>
-				<li class="list-group-item">
-					<a href="room-request.html" class="item ">เพิ่มห้อง</a>
-				</li>
-				<li class="list-group-item">
-					<a href="room-request.html" class="item ">เพิ่มวิชา</a>
-				</li>
+		<ul>
+			<h4 class="ui left aligned header"><br>&nbsp;&nbsp;&nbsp;ยินดีต้อนรับเข้าสู่ระบบ..</h4>
+			<p class="ui left aligned text-align">{{ Auth::user()->full_name }}</p>
 
-				<li class="list-group-item">
-					<a href="{{url('/')}}" class="item">กลับไปหน้าแรก</a>
-				</li>
-				<li class="list-group-item">
-					<a href="{{url('/logout')}}" class="item"><i class="sign out icon"></i>ออกจากระบบ</a>
-				</li>
-			  </ul>
-		</div>
+          <li class="dropdown">
+            <a href="#" data-toggle="dropdown"class="item "><i class="write icon"></i>แก้ไขข้อมูลส่วนตัว</a>
+          </li>
+
+          <li class="dropdown">
+            <a href="#" data-toggle="dropdown"class="item "><i class="building icon"></i>ขอใช้ห้องแล็บ <i class="icon-arrow"></i></a>
+              <ul class="dropdown-menu">
+              <li><a href="{{ route('booking.create')}}"class="item "><i class="pointing up icon"></i>จองห้องแล็บ</a></li>
+              <li><a href="{{ route('booking.list')}}"class="item "><i class="configure icon"></i>แก้ไขการจองห้อง</a></li>
+              </ul>
+          </li>
+
+          <li class="dropdown">
+            <a href="#" data-toggle="dropdown"class="item "><i class="add circle icon"></i>เพิ่มห้องแล็บ<i class="icon-arrow"></i></a>
+            <ul class="dropdown-menu">
+              <li><a href="#"class="item "><i class="pointing up icon"></i>เพิ่มห้องแล็บ</a></li>
+              <li><a href="#"class="item "><i class="configure icon"></i>แก้ไขการเพิ่มห้อง</a></li>
+              <li><a href="#"class="item "><i class="remove circle icon"></i>ยกเลิกการเพิ่มห้อง</a></li>
+              </ul>
+          </li>
+            <li class="dropdown">
+            <a href="{{ url('/logout')}}" data-toggle="dropdown"class="item "><i class="sign out icon"></i>ออกจากระบบ </a>
+            </li>
+
+          <!--dropdown-->
+          <script src="{{ asset('css/room')}}.js"></script>
+			</ul>
 	</div>
+
 @endif

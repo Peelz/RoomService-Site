@@ -13,16 +13,22 @@ class HomeController extends Controller
 
     use AuthenticatesUsers ;
 
+    protected $title ;
+
+    protected $data ;
+
+    protected $num = [1,2,3,4,5];
+
     protected $redirectTo = '/' ;
 
 
     public function postLogin(Request $req)
     {
-        $this->login($req);
+        return $this->login($req);
     }
 
-    public function getLogout(){
-        return Auth::logout();
+    public function getLogout(Request $req){
+        return $this->logout($req);
     }
 
     public function username(){
@@ -34,15 +40,10 @@ class HomeController extends Controller
         return Booking::all() ;
     }
 
-    protected $title ;
-
-    protected $data ;
-
-    protected $num = [1,2,3,4,5];
 
     public function prepareData(){
-        $this->title = 'index' ;
-        $this->data['roomBooking'] = \App\Models\RoomBooking::all()->random(10) ;
+        $this->title = 'หน้าแรก' ;
+        $this->data['roomBooking'] = \App\Models\RoomBooking::where("date",'=',\Carbon\Carbon::now('Asia/Bangkok')->format('Y-m-d'))->get() ;
     }
 
     public function getData(){

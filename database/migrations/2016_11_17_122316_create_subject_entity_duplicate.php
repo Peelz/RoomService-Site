@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRoomEntity extends Migration
+class CreateSubjectEntityDuplicate extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreateRoomEntity extends Migration
      */
     public function up()
     {
-        Schema::create('classroom_entity',function(Blueprint $table){
-            $table->string('room_id')->unique() ;
-            $table->string('room_name') ;
-            $table->unsignedInteger('build') ;
-
-            $table->primary('room_id');
-
-        });
+        // Schema::create('subject_entity_2016_1',function(Blueprint $table){
+        //     $table->increments('enitity_id');
+        //     $table->unsignedInteger('subject_id');
+        //     $table->string('subject_name');
+        //
+        // });
     }
 
     /**
@@ -30,7 +28,6 @@ class CreateRoomEntity extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('classroom_entity') ;
-
+        //
     }
 }

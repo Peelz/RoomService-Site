@@ -10,9 +10,14 @@ class RoomController extends Controller
 
     protected $viewList = 'page.room.list' ;
 
+    public function __construct()
+    {
+        $this->middleware('amdin');
+    }
+
     // Route::get('/room/create','RoomController@showForm');
     public function showForm(){
-        return view($this->ViewForm); 
+        return view($this->ViewForm);
 
     }
     // Route::post('room/create','RoomController@store');

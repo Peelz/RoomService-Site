@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
                 'user_id' => $faker->word,
                 'password' => bcrypt('password'),
                 'firstname' => $faker->firstName,
-                'lastname' => $faker->lastname,
+                'lastname' => $faker->lastName,
                 'email' => $faker->email,
                 'status' => 1 ,
                 'role' => 'instructor',

@@ -1,5 +1,9 @@
 @extends('layouts.page')
 
+@push('meta')
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+
+@endpush
 @push('addPlugin')
 
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
@@ -10,9 +14,11 @@
     <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
     <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
     <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+
+    <link rel='stylesheet' href='http://fullcalendar.io/js/fullcalendar-2.2.3/fullcalendar.css' />
+
     <script src='http://fullcalendar.io/js/fullcalendar-2.2.3/lib/moment.min.js'></script>
     <script src='http://fullcalendar.io/js/fullcalendar-2.2.3/fullcalendar.min.js'></script>
-	<link rel='stylesheet' href='http://fullcalendar.io/js/fullcalendar-2.2.3/fullcalendar.css' />
 
 @endpush
 
@@ -28,17 +34,48 @@
     				background-color: white;">
 				<div id='calendar'></div>
 				<script type="application/javascript">
-				    $(document).ready(function() {
- 					 // page is now ready, initialize the calendar...
-  						// options and github  - http://fullcalendar.io/
 
-					$('#calendar').fullCalendar({
-   						 dayClick: function() {
-       						 alert('a day has been clicked!');
-    					}
-					});
+                    $('#calendar').fullCalendar({
+                        dayClick: function(date) {
+                            Checking(date.format()) ;
+                        }
 
-					});
+                    });
+
+                    function Checking(param){
+                        $.ajax({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            method: "POST",
+                            url: "/api/calendar/checking",
+                            dataType:"json",
+                            data: {
+                                date: param
+                            }
+                        }).done(function(data) {
+                            var table = $('#booking-table > tbody ');
+                            table.find('tr').remove();
+                            var html;
+                            console.log(data.length) ;
+                            if(data.length > 0){
+                                $.each(data, function(i, collect){
+                                    var tr = $('<tr>');
+                                    $.each(collect, function(i, value){
+                                        var td = $('<td>').append(value);
+                                        tr.append(td);
+                                    });
+                                    table.append(tr) ;
+
+                                });
+                            }else{
+                                var tr = $('<tr>');
+                                table.append(tr.append("<td> ไม่ม่การจอง </td>"));
+                            }
+
+
+                        });
+                    }
 
 				</script>
 				</div>
@@ -59,7 +96,7 @@
 		<div class="col-9 col-m-9">
 			<div class="ui container">
 				<div class="content">
-					<table class="ui striped table">
+					<table class="ui striped celled table" id="booking-table">
 						<h2 class="ui dividing header"><i class="history icon"></i>ข้อมูลการใช้ห้อง<a class="anchor" id="content"></a></h2>
 					  <thead>
 					  	<tr>
@@ -67,31 +104,26 @@
 					      <th>เวลา</th>
 					      <th>ห้อง</th>
 					      <th>อาคาร</th>
-					      <th>อาจารย์ผู้สอน</th>
-						  <th>รหัสวิชา</th>
-						  <th>ชื่อวิชา</th>
-						  <th>หมู่เรียน</th>
-						  <th>หมายเหตุ</th>
+					      <th>ผู้จอง</th>
+                          <th>หมายเหตุ</th>
 					    </tr>
 					  </thead>
 					  <tbody >
-                          @if( $data['roomBooking'] )
+                          @if( $data['roomBooking']->count() > 0 )
                               @foreach($data['roomBooking'] as $booking)
                                   <tr>
-                                      <td>{{ $booking->start_time.' - '.$booking->end_time}}</td>
+                                      <td>{{ $booking->time}}</td>
                                       <td>{{ $booking->room->room_id }}</td>
                                       <td>{{ $booking->room->build }}</td>
-                                      <td>{{ $booking->user->user_id }}</td>
-                                      <td>{{ $booking->subject->sub_id }}</td>
-                                      <td>{{ $booking->subject->name}}</td>
-                                      <td>{{ $booking->sec}}</td>
-                                      <td>{{ $booking->note}}</td>
+                                      <td>{{ $booking->user->full_name }}</td>
+                                      <td>{{ $booking->note }}</td>
                                   </tr>
                               @endforeach
+                          @else
+                              <tr>
+                                  <td>ไม่มีการจอง</td>
+                              </tr>
                           @endif
-
-
-
 					  </tbody>
 					</table>
 				</div>

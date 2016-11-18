@@ -4,13 +4,8 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateReservations extends Migration
+class CreateClassromBooking extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::dropIfExists('classroom_booking');
@@ -19,17 +14,29 @@ class CreateReservations extends Migration
             $table->increments('entity_id');
             $table->unsignedInteger('user_id') ;
             $table->string('room_id') ;
-            $table->unsignedInteger('subject_id') ;
+            $table->integer('subject_id') ;
             $table->unsignedInteger('quan_nisit');
             $table->date('date');
             $table->time('start_time') ;
             $table->time('end_time') ;
-            $table->text('note');
+            $table->text('note')->nullable();
+
+            $table->boolean('opt_computer')->default(0);
+            $table->boolean('opt_projector')->default(0);
+            $table->boolean('opt_television')->default(0);
+            $table->boolean('opt_wired_microphone')->default(0);
+            $table->boolean('opt_vga_cable')->default(0);
+            $table->boolean('opt_speaker_and_microphone')->default(0);
+            $table->boolean('opt_visual_presentation')->default(0);
+
+            $table->boolean('ex_opt_wireless_microphone')->default(0) ;
+            $table->text('opt_note')->nullable();
+
             $table->timestamps() ;
 
             $table->foreign('user_id')->references('entity_id')->on('user_entity')->onDelete('cascade');
             $table->foreign('room_id')->references('room_id')->on('classroom_entity')->onDelete('cascade') ;
-            $table->foreign('subject_id')->references('sub_id')->on('subject_entity')->onDelete('cascade');
+            $table->foreign('subject_id')->references('entity_id')->on('subject_entity')->onDelete('cascade');
         });
     }
 
@@ -42,9 +49,11 @@ class CreateReservations extends Migration
     {
         // Schema::table('classroom_booking', function ($table) {
         //
-        //     $table->dropForeign(['user_id','room_id']);
+        //     $table->dropForeign('room_id');
+        //     $table->dropForeign('user_id');
+        //     $table->dropForeign('subject_id');
         // });
 
-        Schema::drop('classroom_booking');
+        Schema::dropIfExists('classroom_booking');
     }
 }

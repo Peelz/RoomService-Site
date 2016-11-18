@@ -22,7 +22,7 @@ class RoomBooking extends Model
         ] ;
 
     public function subject(){
-        return $this->hasOne('\App\Models\Subject','sub_id','subject_id');
+        return $this->hasOne('\App\Models\Subject','entity_id','subject_id');
     }
 
     public function room(){
@@ -30,6 +30,18 @@ class RoomBooking extends Model
     }
 
     public function user(){
-        return $this->hasOne('\App\Models\User','user_id','user_id');
+        return $this->belong('\App\Models\User','entity_id','user_id');
     }
+    public function getTimeAttribute(){
+        return ucfirst($this->start_time).' - '.ucfirst($this->end_time);
+    }
+
+    public function getSubjectNameAttribute(){
+        return ucfirst($this->subject()->subject_name) ;
+    }
+
+    public function getRoomNameAttribute(){
+        return $this->room->room_id ;
+    }
+
 }

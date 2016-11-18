@@ -14,14 +14,17 @@ class User extends Authenticatable
 
     protected $table = 'user_entity'  ;
 
-    protected $fillable = ['user_id','email','firstname','lastname','password','status','role'];
+    protected $fillable = ['entity_id', 'user_id','email','firstname','lastname','password','status','role'];
 
     protected $hidden = ['password', 'remember_token'];
 
-    protected $primaryKey = 'user_id';
-    //
-    //
-    public function getAuthIdentifier()
+    protected $primaryKey = 'entity_id';
+
+
+     public function booking(){
+         return $this->hasMany('App\Models\RoomBooking','user_id','entity_id');
+     }
+     public function getAuthIdentifier()
      {
          return $this->getKey();
      }
@@ -30,6 +33,11 @@ class User extends Authenticatable
      {
          return $this->password;
      }
+     public function getFullNameAttribute(){
+         return ucfirst($this->firstname) . ' ' . ucfirst($this->lastname);
+     }
+
+
 
 
 

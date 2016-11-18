@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class SubjectSeeder extends Seeder
+class SubjectSectionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,20 +11,23 @@ class SubjectSeeder extends Seeder
      */
     public function run()
     {
-
-        DB::table('subject_entity')->delete();
+        DB::table('subject_section')->delete();
 
         $faker = Faker\Factory::create();
         $timestamps = Carbon\Carbon::now();
 
-        for ($i=0; $i < 100 ; $i++) {
+        $subjects = \App\Models\Subject::all() ;
+        $instuctor = \App\Models\Instuctor::all() ;
+
+        foreach ($subjects as $subject) {
             DB::table('subject_entity')->insert([
-                'sub_id' => $faker->randomNumber($nbDigits = 8), // 79907610
-                'name' => $faker->text($maxNbChars = 50),
+                'sub_id' => $subject->entity_id, // 79907610
+                'section' => $faker->numerify('80#'),
+                'instructor_id' => $instuctor->entity_id,
+
                 'created_at' => $timestamps,
                 'updated_at' => $timestamps
             ]);
         }
-
     }
 }

@@ -41,6 +41,6 @@ class CreateUserEntity extends Migration
      */
     public function down()
     {
-        Schema::drop('user_entity');
+        Schema::dropIfExists('user_entity');
     }
 }
