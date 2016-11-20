@@ -16,13 +16,9 @@ Route::get('/','HomeController@index') ;
 
 Route::get('/test',function(){
     $name = 'sur' ;
-    $response = App\Models\Subject::where('subject_name','like','%'.$name.'%')
-                ->pluck('subject_name')->get()->toArray();
-    $json = array(
-        'result'=> $response
-    );
-    return dd($response);
-    return response()->json($json) ;
+    $response = App\Models\User::first()->booking[1];
+
+    dd($response->room_name)        ;
 
 });
 
@@ -83,6 +79,7 @@ Route::group(['middleware' => ['web','auth']] ,function(){
 
 Route::group(['prefix' => 'api' ],function(){
     Route::post('calendar/checking','ApiController@CalendarChecking' );
+    Route::get('calendar/checking','ApiController@CalendarChecking' );
 
     Route::get('search/subject','Api\SearchController@searchSubject');
 

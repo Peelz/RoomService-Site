@@ -19,7 +19,7 @@
             @if( isset($data['title']) )
                 {{ $data['title']}}
             @else
-                {{ "ระบบจองห้อง" }}
+                {{ "ระบบจองห้องแล็บ" }}
             @endif
         </title>
     </head>

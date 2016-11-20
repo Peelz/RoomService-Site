@@ -21,6 +21,8 @@ class RoomBooking extends Model
         'subject_id'
         ] ;
 
+    protected $primaryKey = 'entity_id';
+
     public function subject(){
         return $this->hasOne('\App\Models\Subject','entity_id','subject_id');
     }
@@ -30,10 +32,15 @@ class RoomBooking extends Model
     }
 
     public function user(){
-        return $this->belong('\App\Models\User','entity_id','user_id');
+        return $this->hasOne('\App\Models\User','entity_id','user_id');
     }
+
+    // public function getSubjectAttribute(){
+    //     return !is_null( $this->subject()) ? $this->subject() : NULL ;
+    // }
+    
     public function getTimeAttribute(){
-        return ucfirst($this->start_time).' - '.ucfirst($this->end_time);
+        return $this->start_time.' - '.$this->end_time;
     }
 
     public function getSubjectNameAttribute(){

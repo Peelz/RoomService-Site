@@ -58,16 +58,16 @@
                                         <tbody>
                                             @if($data['booking']->count() > 0)
 
-                                                @foreach($data['booking'] as $data)
+                                                @foreach($data['booking'] as $booking)
                                                     <tr>
                                                         <td></td>
-                                                        <td>{{ $data->time }}</td>
-                                                        <td>{{ $data->date }}</td>
-                                                        <td>{{ $data->subject->subject_id }}</td>
-                                                        <td>{{ $data->subject->subject_name }}</td>
-                                                        <td>{{ $data->room_name}}</td>
-                                                        <td>{{ $data->note }}</td>
-                                                        <td><a href="{{ url('booking.edit/'.$data->entity_id) }}"><i class="configure icon"></i></a></td>
+                                                        <td>{{ $booking->time }}</td>
+                                                        <td>{{ $booking->date }}</td>
+                                                        <td>{{ $booking->subject->subject_id }}</td>
+                                                        <td>{{ $booking->subject->subject_name }}</td>
+                                                        <td>{{ $booking->room_name}}</td>
+                                                        <td>{{ $booking->note }}</td>
+                                                        <td><a href="{{ url('booking/edit/'.$booking->entity_id) }}"><i class="configure icon"></i></a></td>
                                                         <td><a href=""><i class="remove circle icon" onclick="myFunction()"></i></a>
                                                         </td>
                                                     </tr>

@@ -6,7 +6,7 @@ use Validator ;
 use Auth ;
 use App\Models\RoomBooking as Booking ;
 
-trait RoomBooking
+trait BookingAndChecking
 {
 
     public function getUser(){
@@ -16,6 +16,7 @@ trait RoomBooking
 
     public function validator(array $data){
         return Validator::make($data,[
+            'subject' => 'exists:subject_entity,subject_name',
             'start_time' => 'required|' ,
             'end_time' => 'required|after:start_time' ,
             'date' => 'required|',

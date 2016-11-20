@@ -13,8 +13,5 @@ class SubjectSection extends Model
                             'subject_name'
                         ];
 
-    public function setSectionAttribute($value)
-    {
-        $this->attributes['section'] = DB::;
-    }
+
 }

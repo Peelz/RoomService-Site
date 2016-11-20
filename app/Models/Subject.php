@@ -13,5 +13,7 @@ class Subject extends Model
                             'subject_name'
                         ];
 
+    protected $primaryKey = 'entity_id' ;
+
 
 }

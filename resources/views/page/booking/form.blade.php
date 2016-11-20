@@ -88,22 +88,22 @@
                                           </td>
     									</tr>
 
-    									<tr>
+    									{{-- <tr>
     									  <td>หมู่เรียน</td>
     									  <td>
                                              <div class="ui input" >
                                                  <input type="text" name="sec" value="">
                                              </div>
                                           </td>
-    									</tr>
-    									<tr>
+    									</tr> --}}
+    									{{-- <tr>
     									  <td>ผู้สอน</td>
     									  <td>
                                               <div class="ui  input" id="instructor-input">
                                                   <input type="text" name="instructor" value="">
                                               </div>
                                           </td>
-    									</tr>
+    									</tr> --}}
                                         <tr>
                                           <td>ผู้จอง</td>
                                           <td>
@@ -157,14 +157,14 @@
                                                 $('#end_time').timepicker();
                                             </script>
     									</tr>
-                                        <tr>
+                                        {{-- <tr>
                                             <td>อาคาร</td>
                                             <td>
                                                 <div class="ui input" id="build-input">
                                                     <input type="text" name="build" value="">
                                                 </div>
                                             </td>
-                                        </tr>
+                                        </tr> --}}
     									<tr>
     									  <td>ห้องเรียน</td>
     									  <td>
@@ -195,37 +195,37 @@
                                         </div>
                                         <div class="five wide column">
                                             <div class="ui checked checkbox ">
-                                                  <input type="checkbox" name="opt_computer">
+                                                  <input type="checkbox" checked="" name="opt_computer">
                                                   <label>เครื่องคอมพิวเตอร์</label>
                                             </div><br><br>
                                             <div class="ui checkbox checked">
-                                                  <input type="checkbox" name="opt_wired_microphone">
+                                                  <input type="checkbox" checked="" name="opt_wired_microphone">
                                                   <label>ไมโครโฟนแบบมีสาย</label>
                                             </div><br><br>
                                             <div class="ui checkbox checked">
-                                                  <input type="checkbox" name="opt_television">
+                                                  <input type="checkbox" checked="" name="opt_television">
                                                   <label>จอรับภาพ</label>
                                             </div><br><br>
                                             <div class="ui checkbox checked">
-                                                  <input type="checkbox" name="opt_vga_cable">
+                                                  <input type="checkbox" checked="" name="opt_vga_cable">
                                                   <label>สายต่อ Notebook-LCD</label>
                                             </div><br><br><br>
-                                            <div class="ui checkbox checked">
-                                                  <input type="checkbox" name="ex_opt_wireless_microphone">
+                                            <div class="ui checkbox"
+                                                  <input type="checkbox" checked="" name="ex_opt_wireless_microphone">
                                                   <label>ไมโครโฟนไร้สายแบบมือถือ</label>
                                             </div>
                                         </div>
                                         <div class="five wide column">
                                             <div class="ui checkbox checked">
-                                              <input type="checkbox" name="opt_projector">
+                                              <input type="checkbox" checked="" name="opt_projector">
                                               <label>เครื่องฉายภาพ LCD</label>
                                             </div><br><br>
                                             <div class="ui checkbox checked">
-                                              <input type="checkbox" name="opt_visual_presentation">
+                                              <input type="checkbox" checked="" name="opt_visual_presentation">
                                               <label>เครื่องนำเสนอภาพโปร่งแสง - ทึบแสง</label>
                                             </div><br><br>
                                             <div class="ui checkbox checked">
-                                              <input type="checkbox" name="opt_speaker_and_microphone">
+                                              <input type="checkbox" checked="" name="opt_speaker_and_microphone">
                                               <label>เครื่องขยายเสียงพร้อมไมโครโฟน</label>
                                             </div>
                                         </div>
@@ -248,8 +248,6 @@
                                         </div>
                                     </div>
                                     <button class="ui button" type="submit">ยืนยัน</button>
-                                    <button type="button" class="ui button" name="button">ล้างข้อความ</button>
-
                                 </div>
 				    	</div>
 
@@ -263,6 +261,7 @@
     	</div>
 
         <script type="text/javascript">
+        var section , instructor ;
         $('#checking').click(function(){
             var $form = $('#booking-form') ;
 

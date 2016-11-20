@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Classes\Booking\RoomBooking ;
+use App\Classes\Booking\BookingAndChecking ;
 
 use App\Classes\Contact\RoomBooking as RoomBookingContact ;
 
@@ -14,11 +14,13 @@ use App\Models\Subject ;
 
 class BookingController extends Controller implements RoomBookingContact
 {
-    use RoomBooking ;
+    use BookingAndChecking ;
 
     protected $data ;
 
-    protected $Viewfrom = 'page.booking.form' ;
+    protected $ViewForm = 'page.booking.form' ;
+
+    protected $viewEdit = 'page.booking.edit' ;
 
     protected $ViewList = 'page.booking.list' ;
 
@@ -30,7 +32,7 @@ class BookingController extends Controller implements RoomBookingContact
     }
 
     public function showForm(){
-        return view($this->Viewfrom);
+        return view($this->ViewForm);
     }
 
     public function store(Request $req){
@@ -50,17 +52,17 @@ class BookingController extends Controller implements RoomBookingContact
             $booking->end_time = $req->end_time;
             $booking->quan_nisit = $req->quantity_nisit ;
             $booking->user_id = Auth::user()->entity_id ;
-            $booking->subject_id = Subject::where('subject_name',$req->subject)->first()->entity_id ; // none
+            $booking->subject_id = !empty($req->subject) ? Subject::where('subject_name',$req->subject)->first()->entity_id : NULL ; // onne
             $booking->room_id = $req->room;
 
-            $booking->opt_speaker_and_microphone = $req->opt_speaker_and_microphone == 'no' ? true: false;
-            $booking->opt_computer = $req->opt_computer == 'no' ? true: false ;
-            $booking->opt_projector = $req->opt_projector == 'no' ? true: false ;
-            $booking->opt_television = $req->opt_television == 'no' ? true: false ;
-            $booking->opt_wired_microphone = $req->opt_wired_microphone == 'no' ? true: false ;
-            $booking->opt_visual_presentation = $req->opt_visual_presentation == 'no' ? true: false ;
-            $booking->ex_opt_wireless_microphone = $req->ex_opt_wireless_microphone == 'no' ? true: false ;
-            $booking->opt_note = $req->opt_not;
+            $booking->opt_speaker_and_microphone = $req->opt_speaker_and_microphone == 'on' ? 1: 0;
+            $booking->opt_computer = $req->opt_computer == 'on' ? 1: 0 ;
+            $booking->opt_projector = $req->opt_projector == 'on' ? 1: 0 ;
+            $booking->opt_television = $req->opt_television == 'on' ? 1: 0 ;
+            $booking->opt_wired_microphone = $req->opt_wired_microphone == 'on' ? 1: 0 ;
+            $booking->opt_visual_presentation = $req->opt_visual_presentation == 'on' ? 1: 0 ;
+            $booking->ex_opt_wireless_microphone = $req->ex_opt_wireless_microphone == 'on' ? 1: 0 ;
+            $booking->opt_onte = $req->opt_ont;
 
             $booking->save();
             return back()->with('message','ทำรายการสำเร็จ') ;
@@ -80,11 +82,12 @@ class BookingController extends Controller implements RoomBookingContact
 
     public function getEdit($booking_id)
     {
-        $booking = \App\Models\Booking::find($booking_id);
+        $booking = Booking::find($booking_id);
+
         if( $booking->user->user_id != $this->getUser()->user_id ){
             return back() ;
         }else{
-            return view($this->$Viewfrom)
+            return view($this->$ViewForm)
                     ->with('booking',$booking);
         }
     }

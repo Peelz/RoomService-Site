@@ -1,9 +1,3 @@
-@if (count($errors) > 0)
-
-	@foreach($errors->all() as $error)
-		{{ $error }}
-	@endforeach
-@endif
 @push('addPlugin')
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/components/sidebar.min.css')}}">
 
