@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
+use Auth ;
 class AdminPermission
 {
     /**
@@ -13,11 +14,8 @@ class AdminPermission
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next,$guard = null)
     {
-        if( $request->user()->isRole == 'admin' ){
-            return $next($request);
-        }
-        return back();
+
     }
 }

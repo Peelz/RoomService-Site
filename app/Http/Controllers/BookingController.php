@@ -18,11 +18,11 @@ class BookingController extends Controller implements RoomBookingContact
 
     protected $data ;
 
-    protected $ViewForm = 'page.booking.form' ;
+    protected $view_form = 'page.booking.create' ;
 
-    protected $viewEdit = 'page.booking.edit' ;
+    protected $view_edit = 'page.booking.edit' ;
 
-    protected $ViewList = 'page.booking.list' ;
+    protected $view_list = 'page.booking.list' ;
 
     protected $redirectTo  = '/';
 
@@ -32,13 +32,14 @@ class BookingController extends Controller implements RoomBookingContact
     }
 
     public function showForm(){
-        return view($this->ViewForm);
+        return view($this->view_form);
     }
 
     public function store(Request $req){
 
         // return $req->all() ;
-        $validator = $this->validator($req->all());
+        $validator = $this->BookingValidator($req->all());
+        // return $req->all();
         if( $validator->fails()){
             return back()
                     ->withInput()
@@ -52,17 +53,18 @@ class BookingController extends Controller implements RoomBookingContact
             $booking->end_time = $req->end_time;
             $booking->quan_nisit = $req->quantity_nisit ;
             $booking->user_id = Auth::user()->entity_id ;
-            $booking->subject_id = !empty($req->subject) ? Subject::where('subject_name',$req->subject)->first()->entity_id : NULL ; // onne
+            $booking->subject_id = !empty($req->subject) ? Subject::where('subject_id',$req->subject)->first()->entity_id : NULL ; // onne
             $booking->room_id = $req->room;
+            $booking->note =  $req->input('note') ;
 
-            $booking->opt_speaker_and_microphone = $req->opt_speaker_and_microphone == 'on' ? 1: 0;
-            $booking->opt_computer = $req->opt_computer == 'on' ? 1: 0 ;
-            $booking->opt_projector = $req->opt_projector == 'on' ? 1: 0 ;
-            $booking->opt_television = $req->opt_television == 'on' ? 1: 0 ;
-            $booking->opt_wired_microphone = $req->opt_wired_microphone == 'on' ? 1: 0 ;
-            $booking->opt_visual_presentation = $req->opt_visual_presentation == 'on' ? 1: 0 ;
-            $booking->ex_opt_wireless_microphone = $req->ex_opt_wireless_microphone == 'on' ? 1: 0 ;
-            $booking->opt_onte = $req->opt_ont;
+            $booking->opt_speaker_and_microphone = $req->opt_speaker_and_microphone == 'on' ? TRUE: FALSE;
+            $booking->opt_computer = $req->opt_computer == 'on' ? TRUE: FALSE ;
+            $booking->opt_projector = $req->opt_projector == 'on' ? TRUE: FALSE ;
+            $booking->opt_television = $req->opt_television == 'on' ? TRUE: FALSE ;
+            $booking->opt_wired_microphone = $req->opt_wired_microphone == 'on' ? TRUE: FALSE ;
+            $booking->opt_visual_presentation = $req->opt_visual_presentation == 'on' ? TRUE: FALSE ;
+            $booking->ex_opt_wireless_microphone = $req->ex_opt_wireless_microphone == 'on' ? TRUE: FALSE ;
+            $booking->opt_note = $req->opt_note;
 
             $booking->save();
             return back()->with('message','ทำรายการสำเร็จ') ;
@@ -76,7 +78,7 @@ class BookingController extends Controller implements RoomBookingContact
         $user_id = $this->getUser()->entity_id ;
         $this->data['booking'] = $this->prepareListBookingData($user_id);
         // return $user_id;
-        return view('page.booking.list')
+        return view($this->view_list)
         ->with('data',$this->data ) ;
     }
 
@@ -84,29 +86,51 @@ class BookingController extends Controller implements RoomBookingContact
     {
         $booking = Booking::find($booking_id);
 
-        if( $booking->user->user_id != $this->getUser()->user_id ){
+    //    return dd($booking->quan_nisit);
+        if( empty($booking) || $booking->user->user_id != $this->getUser()->user_id ){
             return back() ;
         }else{
-            return view($this->$ViewForm)
-                    ->with('booking',$booking);
+            return view($this->view_edit)
+            ->with('booking',$booking);
+        }
+    }
+    public function update(Request $req,$booking_id){
+        $validator = $this->editFormValidator($req);
+
+        $booking = Booking::find($booking_id)->update([
+            'start_time'=> $req->input('start_time'),
+            'end_time' => $req->input('end_time')
+
+        ]);
+
+        if($validator->fails()){
+            return back()
+                ->withErrors()
+                ->withInput($validator);
         }
     }
 
     public function postEdit(Request $req)
     {
-        $validator = validator($req->all());
+        $validator = BookingValidator($req->all());
 
     }
     public function destroy(Request $req)
     {
 
     }
+
+    // check room was booked .
     public function ajaxCheck(Request $req){
         $response ;
         $validator = $this->CheckRoomEmptyValidator($req->all());
 
         if( $validator->fails()){
-            return response()->json($validator->errors()) ;
+            $response = array(
+                'reply' => 'Disallow',
+                'errors' => $validator->errors()
+            );
+            return response()->json($response) ;
         }
 
         if( $this->CheckRoomIsEmpty($req) ){
@@ -114,8 +138,10 @@ class BookingController extends Controller implements RoomBookingContact
                 'reply' => 'Allow'
             );
         }else{
+            $validator->errors()->add('time','ไม่ว่าง');
             $response = array(
-                'reply' => 'Disallow'
+                'reply' => 'Disallow',
+                'errors' => $validator->errors() ,
             );
         }
 

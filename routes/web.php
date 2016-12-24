@@ -13,12 +13,23 @@
 
 Route::get('/','HomeController@index') ;
 
+Route::get('/password','ForgotPasswordController@getResetPassword');
 
 Route::get('/test',function(){
-    $name = 'sur' ;
-    $response = App\Models\User::first()->booking[1];
+    $n =  array(
+        'items' => [
+            [
+                'id' => 123,
+                'name' => 'kuy'
+            ],
+            [
+                'id' => 1234,
+                'name'=> 'tester' ,
+            ]
+        ]
+    );
 
-    dd($response->room_name)        ;
+    return response()->json($n) ;
 
 });
 
@@ -75,6 +86,13 @@ Route::group(['middleware' => ['web','auth']] ,function(){
     Route::get('/room/edit/{id}','RoomController@edit');
     Route::get('/room/list','RoomController@getList');
 
+    /* Excel Export */
+    Route::get('/export','ExportController@getIndex');
+    Route::get('/export/download','ExportController@getExport');
+
+    Route::post('/export/download','ExportController@download');
+
+
 });
 
 Route::group(['prefix' => 'api' ],function(){
@@ -83,7 +101,9 @@ Route::group(['prefix' => 'api' ],function(){
 
     Route::get('search/subject','Api\SearchController@searchSubject');
 
-    Route::get('search/section','Apo\SearchController@searchSection');
+    Route::get('search/section','Api\SearchController@searchSection');
+
+    Route::get('search/instructor','Api\SearchController@searchInstructor');
 
     Route::get('search/room','Api\SearchController@searchRoom') ;
 

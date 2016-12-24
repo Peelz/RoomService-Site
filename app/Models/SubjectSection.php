@@ -6,12 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class SubjectSection extends Model
 {
-    protected $table = 'subject_section' ;
+    protected $table = 'subject_sec' ;
 
-    protected $fillable = ['entity_id',
+    protected $fillable = ['sec',
                             'subject_id',
-                            'subject_name'
+                            'instructor_id'
                         ];
 
+    public function instructor(){
+        return $this->hasOne('\App\Models\Instructor','entity_id','instructor_id');
+    }
 
 }

@@ -4,38 +4,46 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\Classroom ;
+
+use Validator ;
+
 class RoomController extends Controller
 {
-    protected $ViewForm  = 'page.room.form' ;
+    protected $view_form  = 'page.room.create-form' ;
 
-    protected $viewList = 'page.room.list' ;
+    protected $view_list  = 'page.room.list' ;
 
     public function __construct()
     {
-        $this->middleware('amdin');
+        $this->middleware('auth');
     }
 
     // Route::get('/room/create','RoomController@showForm');
     public function showForm(){
-        return view($this->ViewForm);
+        return view($this->view_form);
 
     }
     // Route::post('room/create','RoomController@store');
     public function store(Request $req){
-        $validator = validator($req->all());
+        $validator = $this->validator($req->all());
         if ($validator->fails()) {
-            return redirect('/room/create')
-                        ->withErrors($validator)
-                        ->withInput();
-        }else {
-
+            return back()
+                    ->withErrors($validator)
+                    ->withInput();
         }
+        $room = new Classroom ;
+        $room->room_id = $req->input('room_id');
+        $room->room_name = $req->input('room_name');
+        $room->build = $req->input('build');
+        $room->save() ;
     }
 
 
     public function validator(array $data){
         return Validator::make($data,[
-
+            'room_id' => 'required|unique:classroom_entity,room_id',
+            'build' => 'required'
         ]);
     }
 
@@ -48,6 +56,8 @@ class RoomController extends Controller
     }
     // Route::get('/room/list','RoomController@getList');
     public function getList(){
-        return view($this->viewList) ;
+        $rooms = Classroom::all();
+        return view($this->view_list)
+            ->with('rooms',$rooms) ;
     }
 }

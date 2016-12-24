@@ -38,9 +38,10 @@ class RoomBooking extends Model
     // public function getSubjectAttribute(){
     //     return !is_null( $this->subject()) ? $this->subject() : NULL ;
     // }
-    
+
     public function getTimeAttribute(){
-        return $this->start_time.' - '.$this->end_time;
+
+        return date('H:i',strtotime($this->start_time)).' - '.date('H:i',strtotime($this->end_time));
     }
 
     public function getSubjectNameAttribute(){

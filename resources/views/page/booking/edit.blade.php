@@ -37,8 +37,6 @@
 @section('content')
     <!-- ส่วนเมนูข้างๆ -->
     	<div class="row">
-            @include('layouts._partial.side-menu')
-
 
     <!-- ส่วนขอใช้งาน -->
     		<div class="col-9 col-m-9">
@@ -80,9 +78,12 @@
     									  <td>วิชา</td>
     									  <td>
                                               <div class="ui search" id="subject-input">
-                                                  <div class="ui icon input">
-                                                    <input class="prompt" type="text" name="subject" placeholder="ค้นหาวิชา">
-                                                    <i class="search icon"></i>
+                                                  <div class="ui input">
+                                                    <input class="prompt"
+                                                        type="text"
+                                                        name="subject"
+                                                        value="{{ !empty($booking->subject) ? $booking->subject->subject_name: "ไม่มีวิชา" }}"
+                                                        disabled="">
                                                   </div>
                                               </div>
                                           </td>
@@ -114,10 +115,8 @@
     										<td>จำนวนคน</td>
     										<td>
                                                 <div class="ui right labeled input">
-    												  <input type="text" name="quantity_nisit" placeholder="">
-    												  <div class="ui label">
-    													  คน
-    													</div>
+    												  <input type="text" name="quantity_nisit" value="{{ $booking->quan_nisit }}" disabled="">
+    												  <div class="ui label"> คน</div>
 												</div>
     										</td>
     									</tr>
@@ -125,7 +124,7 @@
     										<td>วันที่</td>
     										<td>
                                                 <div class="ui icon input">
-    											<input id="date" type="text" name="date" >
+    											<input id="date" type="text" name="date" value="{{ $booking->date}}">
     											<i class="calendar Outline icon"></i>
 
     										    </div>
@@ -143,12 +142,12 @@
     									<td>เวลา</td>
     										<td>
     										<div class="ui icon input">
-    											<input id="start_time" type="text" name="start_time">
+    											<input id="start_time" type="text" name="start_time" value="{{ $booking->start_time}}">
     											<i class="time Outline icon"></i>
     										</div>
                                                 <span>ถึง</span>
     										<div class="ui icon input">
-    											<input id="end_time" type="text" name="end_time">
+    											<input id="end_time" type="text" name="end_time" value="{{ $booking->end_time}}">
     											<i class="time Outline icon"></i>
     										</div>
     										</td>
@@ -169,7 +168,7 @@
     									  <td>ห้องเรียน</td>
     									  <td>
                                               <div class="ui input" id="room-input">
-                                                  <input type="text" name="room" value="">
+                                                  <input type="text" name="room" value="{{ $booking->room->room_id}}">
                                               </div>
                                           </td>
     									</tr>
@@ -177,7 +176,7 @@
     									<tr>
     										<td>หมายเหตุ</td>
     										<td>
-    										    <textarea name="note" rows="4" cols="40"></textarea>
+    										    <textarea name="note" rows="4" cols="40" >{{ $booking->note }}</textarea>
     										</td>
     									</tr>
 
@@ -257,8 +256,7 @@
     			</div>
 
     		</div>
-    		</div>
-    	</div>
+		</div>
 
         <script type="text/javascript">
         var section , instructor ;
