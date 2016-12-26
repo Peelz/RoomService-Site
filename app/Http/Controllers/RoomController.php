@@ -37,6 +37,8 @@ class RoomController extends Controller
         $room->room_name = $req->input('room_name');
         $room->build = $req->input('build');
         $room->save() ;
+
+        return redirect()->back();
     }
 
 

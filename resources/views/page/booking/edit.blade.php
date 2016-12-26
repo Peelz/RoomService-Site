@@ -18,7 +18,6 @@
     <script type="text/javascript" src="/timerpicker/include/ui-1.10.0/jquery.ui.widget.min.js"></script>
     <script type="text/javascript" src="/timerpicker/include/ui-1.10.0/jquery.ui.tabs.min.js"></script>
     <script type="text/javascript" src="/timerpicker/include/ui-1.10.0/jquery.ui.position.min.js"></script>
-
     <script type="text/javascript" src="/timerpicker/jquery.ui.timepicker.js?v=0.3.3"></script>
     {{-- <script type="text/javascript" src="/css/components/search.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="/css/components/search.min.css" charset="utf-8"></script> --}}
@@ -39,7 +38,6 @@
     	<div class="row">
 
     <!-- ส่วนขอใช้งาน -->
-    		<div class="col-9 col-m-9">
                 @if (count($errors) > 0)
                     <div class="ui error message">
                       <i class="close icon"></i>
@@ -64,7 +62,7 @@
                       <p>{{ 'บันทึกข้อมูลเรียบร้อย' }}</p>
                     </div>
                 @endif
-    			<div class="ui container">
+    			<div class="ui container" id="main-container">
     				<div class="content" >
     					<div class="ui segment">
     						<form action="{{ url('booking/create')}}" method="post" class="ui form" id="booking-form">
@@ -77,34 +75,29 @@
     									<tr>
     									  <td>วิชา</td>
     									  <td>
-                                              <div class="ui search" id="subject-input">
-                                                  <div class="ui input">
-                                                    <input class="prompt"
-                                                        type="text"
-                                                        name="subject"
-                                                        value="{{ !empty($booking->subject) ? $booking->subject->subject_name: "ไม่มีวิชา" }}"
-                                                        disabled="">
-                                                  </div>
+                                              <div class="ui input disabled" id="subject-input">
+                                                    <input type="text" value="{{$booking->subject->subject_name}}" >
                                               </div>
                                           </td>
     									</tr>
 
-    									{{-- <tr>
+    									<tr>
     									  <td>หมู่เรียน</td>
     									  <td>
-                                             <div class="ui input" >
-                                                 <input type="text" name="sec" value="">
-                                             </div>
-                                          </td>
-    									</tr> --}}
-    									{{-- <tr>
-    									  <td>ผู้สอน</td>
-    									  <td>
-                                              <div class="ui  input" id="instructor-input">
-                                                  <input type="text" name="instructor" value="">
+
+                                              <div class="ui input" id="section-input">
+                                                    <input type="text" value="{{$booking->sec}}" >
                                               </div>
                                           </td>
-    									</tr> --}}
+    									</tr>
+    									<tr>
+    									  <td>ผู้สอน</td>
+    									  <td>
+                                              <div class="ui input disabled" id="instructor-input">
+                                                  <input type="hidden" name="instructor" >
+                                              </div>
+                                          </td>
+    									</tr>
                                         <tr>
                                           <td>ผู้จอง</td>
                                           <td>
@@ -115,8 +108,10 @@
     										<td>จำนวนคน</td>
     										<td>
                                                 <div class="ui right labeled input">
-    												  <input type="text" name="quantity_nisit" value="{{ $booking->quan_nisit }}" disabled="">
-    												  <div class="ui label"> คน</div>
+    												  <input type="text" name="quantity_nisit" placeholder="">
+    												  <div class="ui label">
+    													  คน
+    													</div>
 												</div>
     										</td>
     									</tr>
@@ -124,37 +119,53 @@
     										<td>วันที่</td>
     										<td>
                                                 <div class="ui icon input">
-    											<input id="date" type="text" name="date" value="{{ $booking->date}}">
+    											<input id="date" type="text" name="date" >
     											<i class="calendar Outline icon"></i>
 
     										    </div>
                                             </td>
-                                            <script type="text/javascript">
-                                                $('#date').daterangepicker({
-                                                    format: 'YYYY-MM-DD',
-                                                    singleDatePicker: true,
-                                                    showDropdowns: true
 
-                                                });
-                                            </script>
     									</tr>
     									<tr>
     									<td>เวลา</td>
-    										<td>
-    										<div class="ui icon input">
-    											<input id="start_time" type="text" name="start_time" value="{{ $booking->start_time}}">
-    											<i class="time Outline icon"></i>
-    										</div>
-                                                <span>ถึง</span>
-    										<div class="ui icon input">
-    											<input id="end_time" type="text" name="end_time" value="{{ $booking->end_time}}">
-    											<i class="time Outline icon"></i>
-    										</div>
+    										<td >
+                                                <div class="eight fields">
+                                                    <input type="hidden" id="start_time" name="start_time" >
+
+                                                    <div class="field" >
+                                                        <select class="ui search  dropdown" type="text" name="start_time_hour" style="text-indent: 5px;">
+                                                            @for($i=7; $i <= 20 ; $i++)
+                                                                <option value="{{$i}}">{{$i}}</option>
+                                                            @endfor
+                                                        </select>
+                                                    </div>
+                                                    <div class="field">
+                                                        <select class="ui search  dropdown" type="text" name="start_time_min">
+                                                            <option value="00">00</option>
+                                                            <option value="30">30</option>
+                                                        </select>
+                                                    </div>
+                                                    <span style="padding: 7px 0 ;"> ถึง </span>
+                                                    <input type="hidden" id="end_time" name="end_time" >
+
+                                                    <div class="field" >
+                                                        <select class="ui search  dropdown" type="text" name="end_time_hour" style="text-indent: 5px;">
+                                                            @for($i=7; $i <= 20 ; $i++)
+                                                                <option value="{{$i}}">{{$i}}</option>
+                                                            @endfor
+                                                        </select>
+                                                    </div>
+                                                    <div class="field">
+                                                        <select class="ui search  dropdown" type="text" name="end_time_min">
+                                                            <option value="00">00</option>
+                                                            <option value="30">30</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+
     										</td>
-                                              <script>
-                                                $('#start_time').timepicker();
-                                                $('#end_time').timepicker();
-                                            </script>
+
     									</tr>
                                         {{-- <tr>
                                             <td>อาคาร</td>
@@ -168,7 +179,7 @@
     									  <td>ห้องเรียน</td>
     									  <td>
                                               <div class="ui input" id="room-input">
-                                                  <input type="text" name="room" value="{{ $booking->room->room_id}}">
+                                                  <input type="text" name="room" value="">
                                               </div>
                                           </td>
     									</tr>
@@ -176,14 +187,16 @@
     									<tr>
     										<td>หมายเหตุ</td>
     										<td>
-    										    <textarea name="note" rows="4" cols="40" >{{ $booking->note }}</textarea>
+    										    <textarea name="note" rows="4" cols="40"></textarea>
     										</td>
     									</tr>
 
     								</tbody>
     							</table>
                                 <button class="ui button" type="button" id="checking">ตรวจสอบ </button>
+                                <div class="alert-box">
 
+                                </div>
                                 <div class="option">
                                     <div class="ui grid">
                                         <div class="row">
@@ -240,7 +253,7 @@
                                             <div class="nine wide column">
                                                 <div class="ui form">
                                                   <div class="field">
-                                                    <textarea rows="2"></textarea>
+                                                    <textarea rows="2" name="opt_note"></textarea>
                                                   </div>
                                                 </div>
                                             </div>
@@ -255,41 +268,154 @@
     					</div>
     			</div>
 
-    		</div>
 		</div>
-
         <script type="text/javascript">
-        var section , instructor ;
+            $('#date').daterangepicker({
+                format: 'YYYY-MM-DD',
+                singleDatePicker: true,
+                showDropdowns: true
+
+            });
+        </script>
+        <script type="text/javascript">
+        function ErrorsMessage(data){
+            var html = "" ;
+            $.each(data, function(i, item) {
+                if(i != 'undefined' ){
+
+                    html = html + '<li>'+item+'</li>';
+
+                }
+            })
+
+            return html;
+        };
+
+        function newErrorUi(el) {
+            var html = '<div class="ui error message">'+
+              '<i class="close icon"></i>'+
+              '<div class="header">'+
+                'มีบางอย่างผิดพลาด'+
+              '</div>'+
+              '<ul class="list">'+
+                el+
+              '</ul>'+
+            '</div>';
+            return html ;
+        };
+
         $('#checking').click(function(){
             var $form = $('#booking-form') ;
-
+            $form.submit(function(){
+                $('input[name=start_time]').val($form.find( "select[name='start_time_hour']" ).val()+":"+$form.find( "select[name='start_time_min']" ).val());
+                $('input[name=end_time]').val($form.find( "select[name='end_time_hour']" ).val()+":"+$form.find( "select[name='end_time_min']" ).val());
+                return true;
+            });
             $.get('{{ url('/booking/check')}}',{
                 date: $form.find( "input[name='date']" ).val(),
-                start_time: $form.find( "input[name='start_time']" ).val(),
-                end_time: $form.find( "input[name='end_time']" ).val(),
+                start_time: $form.find( "select[name='start_time_hour']" ).val()+":"+$form.find( "select[name='start_time_min']" ).val() ,
+                end_time: $form.find( "select[name='end_time_hour']" ).val()+":"+$form.find( "select[name='end_time_min']" ).val() ,
                 room: $form.find( "input[name='room']" ).val(),
 
             })
             .success(function(data){
-                console.log(data);
+                // console.log(data);
                 if(data['reply'] == 'Allow' ){
+                    $('.ui.error.message').remove() ;
                     $('#booking-form .option').addClass('active');
+                }
+                else{
+                    // alert('กรุณากรอกข้อมูลให้ถูกต้อง');
+                    inner = ErrorsMessage(data['errors']);
+                    error_ui = newErrorUi(inner) ;
+
+                    $('.ui.error.message').remove() ;
+                    $('#main-container').before(error_ui);
+
+                    $('#booking-form .option').removeClass('active');
+                    $('.message .close')
+                      .on('click', function() {
+                        $(this)
+                          .closest('.message')
+                          .transition('fade')
+                        ;
+                      })
+                    ;
+
                 }
             })
         });
-          $('#subject-input').search({
+        var subjectId;
+        var selection ;
+        // var sections = [{"sec":"800","start_time":"8","end_time":"10","room":"Lab CE","capacity":40,"instructor_id":68,"subject_id":17},{"sec":"830","start_time":"13","end_time":"16","room":"Lab CE","capacity":40,"instructor_id":68,"subject_id":17}];
+        var instructor;
+          $('#subject-input').dropdown({
               apiSettings: {
                 url: '{{ url('api/search/subject/') }}?name={query}'
+              },
+            //   type: 'category',
+              fields:{
+                  name: 'name',
+                  value: 'id',
+                  text: 'name',
+              },
+              fullTextSearch: true,
+              showNoResults : true,
+              saveRemoteData: false,
+              onChange: function(value, text, $choice){
+                  subjectId = value;
+                  $('#section-input').dropdown('clear');
+                  $('#instructor-input').dropdown('clear');
 
               },
-              // type: 'category',
-              fields:{
-                  title: 'subject_name',
-              },
-              minCharacters : 3,
-              showNoResults : true,
+              error:{
+                  noResults : "ไม่พบรายวิชา"
+              }
 
             });
+
+
+            $('#section-input').on('click',function(){
+                $('#section-input').dropdown({
+                    apiSettings: {
+                      url: '{{url('/api/search/section/?q=')}}'+subjectId
+                  },
+                  onChange: function(value, text, $choice){
+                      section = value;
+                  },
+                  fields:{
+                      name: 'sec',
+                      value: 'sec',
+                      text: 'sec',
+
+                  },
+                  minCharacters: 0,
+                });
+            });
+
+            $('#instructor-input').on('click',function(){
+
+                $('#instructor-input').dropdown({
+                    apiSettings: {
+                      url: '{{url('/api/search/instructor/?sub=')}}'+subjectId+'&sec='+section
+                  },
+                  fullTextSearch: true,
+                 // showOnFocus : true,
+                 debug: false,
+                 saveRemoteData: false,
+                 fields: {
+                     name : 'name',
+                     value : 'id',
+                     text : 'name'
+                 }
+
+                });
+
+            });
+
+
+
+
         </script>
 
 @endsection

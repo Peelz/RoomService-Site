@@ -14,20 +14,35 @@
 Route::get('/','HomeController@index') ;
 
 Route::get('/password','ForgotPasswordController@getResetPassword');
+Route::get('/test/date',function(){
+    $cur = \Carbon\Carbon::now();
 
+    $m = \App\Models\RoomBooking::where('date','like',date($cur->format('Y-m').'%'))->get();
+    return dd($m->toArray());
+});
+Route::get('/test/export','ExportController@exportToExcel') ;
 Route::get('/test',function(){
-    $n =  array(
-        'items' => [
-            [
-                'id' => 123,
-                'name' => 'kuy'
-            ],
-            [
-                'id' => 1234,
-                'name'=> 'tester' ,
-            ]
-        ]
+
+    $data = \App\Models\RoomBooking::all()->groupBy('room_id');
+
+    $res =$data->map(function ($item,$key) {
+                        return [$key => $item->count()] ;
+                    })->toArray();
+
+    $news = array();
+
+    foreach ($data as $key=>$val) {
+        $z = array($key=>$val->count());
+        $news = array_prepend($news,$z);
+    }
+
+    $data = array(
+        array('data1', 'data2'),
+        array('data3', 'data4')
     );
+
+    return dd($data) ;
+    return dd($news);
 
     return response()->json($n) ;
 
@@ -88,8 +103,6 @@ Route::group(['middleware' => ['web','auth']] ,function(){
 
     /* Excel Export */
     Route::get('/export','ExportController@getIndex');
-    Route::get('/export/download','ExportController@getExport');
-
     Route::post('/export/download','ExportController@download');
 
 

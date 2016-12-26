@@ -46,12 +46,9 @@
                                   }else{
                                       selected_obj = $(this);
                                   }
-                                  console.log(date.format(),selected_date);
-
+                                  Checking(date.format());
+                                //   console.log(date.format(),selected_date);
                               }
-
-
-
                           }
                         });
                   </script>
@@ -153,7 +150,7 @@
                     var table = $('#booking-table > tbody ');
                     table.find('tr').remove();
                     var html;
-                    console.log(data.length) ;
+                    console.log(data) ;
                     if(data.length > 0){
                         $.each(data, function(i, collect){
                             var tr = $('<tr>');

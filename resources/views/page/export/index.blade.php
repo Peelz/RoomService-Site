@@ -74,7 +74,7 @@
                         </div>
 
                     </div>
-                    <button class="ui button" >ดาวน์โหลด </button>
+                    <button class="ui button" id="downloadBtn" >ดาวน์โหลด </button>
 
                 </form>
             </div>
@@ -108,6 +108,7 @@
         });
 
         $('.selection.dropdown').dropdown();
+
     </script>
 
 @endsection

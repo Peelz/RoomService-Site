@@ -27,7 +27,7 @@
 
 
           <li class="dropdown">
-            <a href="#" data-toggle="dropdown"class="item "><i class="building icon"></i>ขอใช้ห้องแล็บ <i class="icon-arrow"></i></a>
+            <a href="#" data-toggle="dropdown"class="item "><i class="building icon"></i>จัดการห้องแล็บ <i class="icon-arrow"></i></a>
               <ul class="dropdown-menu">
               <li><a href="{{ route('booking.create')}}"class="item "><i class="pointing up icon"></i>จองห้องแล็บ</a></li>
               <li><a href="{{ route('booking.list')}}"class="item "><i class="configure icon"></i>แก้ไขการจองห้อง</a></li>
@@ -55,6 +55,4 @@
 		</ul>
 
 	</div>
-
-
 @endif
