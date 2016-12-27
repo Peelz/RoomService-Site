@@ -14,45 +14,43 @@
 Route::get('/','HomeController@index') ;
 
 Route::get('/password','ForgotPasswordController@getResetPassword');
-Route::get('/test/date',function(){
-    $cur = \Carbon\Carbon::now();
-
-    $m = \App\Models\RoomBooking::where('date','like',date($cur->format('Y-m').'%'))->get();
-    return dd($m->toArray());
-});
-Route::get('/test/export','ExportController@exportToExcel') ;
-Route::get('/test',function(){
-
-    $data = \App\Models\RoomBooking::all()->groupBy('room_id');
-
-    $res =$data->map(function ($item,$key) {
-                        return [$key => $item->count()] ;
-                    })->toArray();
-
-    $news = array();
-
-    foreach ($data as $key=>$val) {
-        $z = array($key=>$val->count());
-        $news = array_prepend($news,$z);
-    }
-
-    $data = array(
-        array('data1', 'data2'),
-        array('data3', 'data4')
-    );
-
-    return dd($data) ;
-    return dd($news);
-
-    return response()->json($n) ;
-
-});
+// Route::get('/test/date',function(){
+//     $cur = \Carbon\Carbon::now();
+//
+//     $m = \App\Models\RoomBooking::where('date','like',date($cur->format('Y-m').'%'))->get();
+//     return dd($m->toArray());
+// });
+// Route::get('/test/export','ExportController@exportToExcel') ;
+// Route::get('/test',function(){
+//
+//     $data = \App\Models\RoomBooking::all()->groupBy('room_id');
+//
+//     $res =$data->map(function ($item,$key) {
+//                         return [$key => $item->count()] ;
+//                     })->toArray();
+//
+//     $news = array();
+//
+//     foreach ($data as $key=>$val) {
+//         $z = array($key=>$val->count());
+//         $news = array_prepend($news,$z);
+//     }
+//
+//     $data = array(
+//         array('data1', 'data2'),
+//         array('data3', 'data4')
+//     );
+//
+//     return dd($data) ;
+//     return dd($news);
+//
+//     return response()->json($n) ;
+//
+// });
 
 Route::get('/logout', 'HomeController@getLogout');
 
-Route::get('/login',function(){
-    return redirect('/');
-});
+Route::get('/login','HomeController@index') ;
 Route::post('/login', 'HomeController@postLogin');
 
 

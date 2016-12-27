@@ -141,7 +141,7 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     method: "POST",
-                    url: "/api/calendar/checking",
+                    url: "{{url(/api/calendar/checking)}}",
                     dataType:"json",
                     data: {
                         date: param
