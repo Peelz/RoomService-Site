@@ -11,6 +11,8 @@ use Auth ;
 
 use App\Models\RoomBooking as Booking ;
 use App\Models\Subject ;
+use App\Models\SubjectSection ;
+
 
 class BookingController extends Controller implements RoomBookingContact
 {
@@ -53,7 +55,11 @@ class BookingController extends Controller implements RoomBookingContact
             $booking->end_time = $req->end_time;
             $booking->quan_nisit = $req->quantity_nisit ;
             $booking->user_id = Auth::user()->entity_id ;
-            $booking->subject_id = !empty($req->subject) ? Subject::where('subject_id',$req->subject)->first()->entity_id : NULL ; // onne
+            $subject_id = Subject::where('subject_id',$req->subject)->first()->entity_id ;
+            $booking->section_id = !empty($req->subject) ? SubjectSection::where('subject_id',$subject_id)
+                                                                    ->where('sec',$req->sec)
+                                                                    ->where('instructor_id',$req->instructor)
+                                                                    ->first()->section_id : NULL ; // onne
             $booking->room_id = $req->room;
             $booking->note =  $req->input('note') ;
 
@@ -70,14 +76,14 @@ class BookingController extends Controller implements RoomBookingContact
             return back()->with('message','ทำรายการสำเร็จ') ;
         }
 
-        return back()->with('errors','มีบางอย่างผิดพลาดห') ;
+        return back()->with('errors','มีบางอย่างผิดพลาด') ;
     }
 
     public function getList()
     {
         $user_id = $this->getUser()->entity_id ;
         $this->data['booking'] = $this->prepareListBookingData($user_id);
-        // return $user_id;
+        // $this->data['booking']->setPath('booking/list');
         return view($this->view_list)
         ->with('data',$this->data ) ;
     }
@@ -86,7 +92,7 @@ class BookingController extends Controller implements RoomBookingContact
     {
         $booking = Booking::find($booking_id);
 
-    //    return dd($booking->quan_nisit);
+    //   Check URL Owner
         if( empty($booking) || $booking->user->user_id != $this->getUser()->user_id ){
             return back() ;
         }else{
@@ -95,28 +101,29 @@ class BookingController extends Controller implements RoomBookingContact
         }
     }
     public function update(Request $req,$booking_id){
-        $validator = $this->editFormValidator($req);
-
-        $booking = Booking::find($booking_id)->update([
-            'start_time'=> $req->input('start_time'),
-            'end_time' => $req->input('end_time')
-
-        ]);
+        $validator = $this->editFormValidator($req->all());
 
         if($validator->fails()){
             return back()
                 ->withErrors()
                 ->withInput($validator);
+        }else {
+            $booking = Booking::find($booking_id)->update([
+                'start_time'=> $req->input('start_time'),
+                'end_time' => $req->input('end_time')
+
+            ]);
+            return back()->with('message','ทำรายการสำเร็จ') ;
+
         }
+
+
+
     }
 
     public function postEdit(Request $req)
     {
         $validator = BookingValidator($req->all());
-
-    }
-    public function destroy(Request $req)
-    {
 
     }
 

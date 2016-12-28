@@ -70,44 +70,26 @@
                         var chart = AmCharts.makeChart( "chartdiv", {
                           "type": "serial",
                           "theme": "light",
-                          "dataProvider": [ {
-                            "room": "15202",
-                            "visits": 10
-                          }, {
-                            "room": "15301",
-                            "visits": 8
-                          }, {
-                            "room": "15401",
-                            "visits": 5
-                          }, {
-                            "room": "15204",
-                            "visits": 2
-                          }, {
-                            "room": "15302",
-                            "visits": 7
-                          }, {
-                            "room": "15402",
-                            "visits": 4
-                          } ],
-                          "valueAxes": [ {
-                            "gridColor": "#FFFFFF",
-                            "gridAlpha": 0.2,
-                            "dashLength": 0
-                          } ],
-                          "gridAboveGraphs": true,
-                          "startDuration": 1,
-                          "graphs": [ {
-                            "balloonText": "[[category]]: <b>[[value]]</b>",
-                            "fillAlphas": 0.8,
-                            "lineAlpha": 0.2,
-                            "type": "column",
-                            "valueField": "visits"
-                          } ],
+                          "dataProvider": {!! $data_booking_month !!},
                           "chartCursor": {
                             "categoryBalloonEnabled": false,
                             "cursorAlpha": 0,
                             "zoomable": false
                           },
+                          "valueAxes": [ {
+                              "gridColor": "#FFFFFF",
+                              "gridAlpha": 0.2,
+                              "dashLength": 0
+                            } ],
+                            "gridAboveGraphs": true,
+                            "startDuration": 1,
+                            "graphs": [ {
+                              "balloonText": "[[category]]: <b>[[value]]</b>",
+                              "fillAlphas": 0.8,
+                              "lineAlpha": 0.2,
+                              "type": "column",
+                              "valueField": "visits"
+                            } ],
                           "categoryField": "room",
                           "categoryAxis": {
                             "gridPosition": "start",
@@ -136,21 +118,24 @@
             });
 
             function Checking(param){
+                var booking_table = $('#booking-table') ;
+                booking_table.dimmer('show');
+                booking_table.find('.loader').addClass('active');
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     method: "POST",
-                    url: "{{url(/api/calendar/checking)}}",
+                    url: "{{ url('/api/calendar/checking') }}",
                     dataType:"json",
                     data: {
                         date: param
                     }
-                }).done(function(data) {
+                })
+                .done(function(data) {
                     var table = $('#booking-table > tbody ');
                     table.find('tr').remove();
                     var html;
-                    console.log(data) ;
                     if(data.length > 0){
                         $.each(data, function(i, collect){
                             var tr = $('<tr>');
@@ -166,6 +151,10 @@
                         table.append(tr.append("<td> ไม่ม่การจอง </td>"));
                     }
 
+                    booking_table.dimmer('hide');
+                    booking_table.find('.loader').removeClass('active');
+
+
 
                 });
             }
@@ -173,7 +162,9 @@
         </script>
 
 <!-- ประวัติการใช้งานห้อง -->
-        <div class="ui white segment">
+        <div class="ui white segment" id="booking-table">
+            <div class="ui loader"></div>
+
 			<table class="ui striped celled table" id="booking-table">
 				<h2 class="ui dividing header"><i class="history icon"></i>ข้อมูลการใช้ห้อง<a class="anchor" id="content"></a></h2>
 			  <thead>
@@ -187,8 +178,8 @@
 			    </tr>
 			  </thead>
 			  <tbody >
-                  @if( $data['roomBooking']->count() > 0 )
-                      @foreach($data['roomBooking'] as $booking)
+                  @if( $data_booking->count() > 0 )
+                      @foreach($data_booking as $booking)
                           <tr>
                               <td>{{ $booking->time}}</td>
                               <td>{{ $booking->room->room_id }}</td>
@@ -202,7 +193,24 @@
                           <td>ไม่มีการจอง</td>
                       </tr>
                   @endif
+
 			  </tbody>
+              @if( $data_booking->total() > $data_booking->perPage() )
+                  <tfoot>
+                      <tr>
+                          <th colspan="8">
+                            <div class="ui right floated pagination menu">
+                              <a class="icon item" href="{{ $data_booking->previousPageUrl() }}"><i class="left chevron icon"></i> </a>
+                                @for($i=1; $i <= $data_booking->lastPage() ; $i++)
+                                    <a href=" {{ url('/?page=').$i }}" class="item"> {{ $i }}</a>
+                                @endfor
+                              <a class="icon item" href="{{ $data_booking->nextPageUrl() }}"><i class="right chevron icon"></i></a>
+                            </div>
+                          </th>
+                      </tr>
+                  </tfoot>
+              @endif
+
 			</table>
         </div>
 </div>

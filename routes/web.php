@@ -75,7 +75,7 @@ Route::group(['middleware' => ['web','auth']] ,function(){
     Route::get('/booking/check',[
         'uses'=> 'BookingController@ajaxCheck'
     ]);
-    Route::post('/booking/edit','BookingController@postEdit');
+    Route::post('/booking/update/{booking_id}','BookingController@update');
     Route::post('/booking/delete','BookingController@destroy');
 
 

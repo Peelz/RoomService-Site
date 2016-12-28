@@ -53,7 +53,7 @@
                       </div>
                 @endif
 
-                @if( isset($messages))
+                @if( isset($message))
                     <div class="ui success message">
                       <i class="close icon"></i>
                       <div class="header">
@@ -220,19 +220,17 @@
 
     								</tbody>
     							</table>
-                                <button class="ui button" type="button" id="checking">ตรวจสอบ </button>
+                                <button class="ui blue button" type="button" id="checking">ตรวจสอบ </button>
                                 <div class="alert-box">
 
                                 </div>
                                 <div class="option">
                                     <div class="ui grid">
-                                        <div class="row">
-                                            <div class="one wide column">
-                                            </div>
-                                        <div class="two wide column">
-                                            <p>อุปกรณ์พื้นฐาน : </p><br><br><br><br><br><br><br><br><br><p>อุปกรณ์อื่นๆ : </p>
+                                        <div class="four wide column">
+                                            <p>อุปกรณ์พื้นฐาน :</p>
                                         </div>
-                                        <div class="five wide column">
+
+                                        <div class="six wide column">
                                             <div class="ui checked checkbox ">
                                                   <input type="checkbox" checked="" name="opt_computer">
                                                   <label>เครื่องคอมพิวเตอร์</label>
@@ -249,12 +247,8 @@
                                                   <input type="checkbox" checked="" name="opt_vga_cable">
                                                   <label>สายต่อ Notebook-LCD</label>
                                             </div><br><br><br>
-                                            <div class="ui checkbox"
-                                                  <input type="checkbox" checked="" name="ex_opt_wireless_microphone">
-                                                  <label>ไมโครโฟนไร้สายแบบมือถือ</label>
-                                            </div>
                                         </div>
-                                        <div class="five wide column">
+                                        <div class="six wide column">
                                             <div class="ui checkbox checked">
                                               <input type="checkbox" checked="" name="opt_projector">
                                               <label>เครื่องฉายภาพ LCD</label>
@@ -268,25 +262,33 @@
                                               <label>เครื่องขยายเสียงพร้อมไมโครโฟน</label>
                                             </div>
                                         </div>
-                                        </div>
                                     </div>
                                     <div class="ui grid">
-                                        <div class="row">
-                                            <div class="one wide column">
-                                            </div>
-                                            <div class="two wide column">
-                                                <p>เพิ่มเติม : </p>
-                                            </div>
-                                            <div class="nine wide column">
-                                                <div class="ui form">
-                                                  <div class="field">
-                                                    <textarea rows="2" name="opt_note"></textarea>
-                                                  </div>
-                                                </div>
+                                        <div class="four wide column">
+                                            <p>อุปกรณ์อื่นๆ :</p>
+                                        </div>
+                                        <div class="six wide column">
+                                            <div class="ui checkbox">
+                                                  <input type="checkbox" checked="" name="ex_opt_wireless_microphone">
+                                                  <label>ไมโครโฟนไร้สายแบบมือถือ</label>
                                             </div>
                                         </div>
+
                                     </div>
-                                    <button class="ui button" type="submit">ยืนยัน</button>
+                                    <div class="ui grid">
+                                        <div class="four wide column">
+                                            <p>เพิ่มเติม : </p>
+                                        </div>
+                                        <div class="six wide column">
+                                            <div class="ui form">
+                                              <div class="field">
+                                                <textarea rows="2" name="opt_note"></textarea>
+                                              </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <button class="ui positive button" type="submit">ยืนยัน</button>
                                 </div>
 				    	</div>
 

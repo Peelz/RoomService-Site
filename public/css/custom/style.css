@@ -614,12 +614,16 @@ $('.ui.search')
 
 #main-content{
 margin-bottom: 32px;
+margin-top:  24px;
 }
+
 #booking-form .option {
     display: none;
+    margin-top: 20px;
 }
 #booking-form .option.active {
     display: block;
+
 }
 
 /* Bank */

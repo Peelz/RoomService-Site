@@ -25,17 +25,17 @@ class UserSeeder extends Seeder
 
         ]);
 
-        for ($i=0; $i < 10; $i++) {
-            DB::table('user_entity')->insert([
-                'user_id' => $faker->word,
-                'password' => bcrypt('password'),
-                'firstname' => $faker->firstName,
-                'lastname' => $faker->lastName,
-                'email' => $faker->email,
-                'status' => 1 ,
-                'role' => 'instructor',
-            ]);
-        }
+        // for ($i=0; $i < 10; $i++) {
+        //     DB::table('user_entity')->insert([
+        //         'user_id' => $faker->word,
+        //         'password' => bcrypt('password'),
+        //         'firstname' => $faker->firstName,
+        //         'lastname' => $faker->lastName,
+        //         'email' => $faker->email,
+        //         'status' => 1 ,
+        //         'role' => 'instructor',
+        //     ]);
+        // }
 
 
     }

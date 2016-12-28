@@ -15,9 +15,9 @@ class HomeController extends Controller
 
     protected $title ;
 
-    protected $data ;
+    protected $booking ;
 
-    protected $num = [1,2,3,4,5];
+    protected $booking_month ;
 
     protected $redirectTo = '/' ;
 
@@ -40,10 +40,32 @@ class HomeController extends Controller
         return Booking::all() ;
     }
 
-
+    public function getCurrentDate(){
+        return \Carbon\Carbon::now('Asia/Bangkok');
+    }
     public function prepareData(){
         $this->title = 'หน้าแรก' ;
-        $this->data['roomBooking'] = \App\Models\RoomBooking::where("date",'=',\Carbon\Carbon::now('Asia/Bangkok')->format('Y-m-d'))->get() ;
+        $this->booking = \App\Models\RoomBooking::where("date",'=',$this->getCurrentDate()->format('Y-m-d') )->paginate(7) ;
+
+        $this->booking_month = $this->getTotalBooking();
+
+    }
+
+    public function getTotalBooking(){
+        $query = \App\Models\RoomBooking::whereMonth("date",'=',$this->getCurrentDate()->format('m'))
+                ->get()
+                ->groupBy('room_id');
+
+        $data = $query->map(function($item,$key){
+            return ['room'=>$key,'visits'=>$item->count()];
+        });
+
+        $arr = collect();
+        foreach ($data as $key => $value) {
+            $arr->prepend($value);
+        }
+
+        return $arr->toJson() ;
     }
 
     public function getData(){
@@ -52,9 +74,12 @@ class HomeController extends Controller
     public function index()
     {
         $this->prepareData() ;
+        // return dd($this->data['roomBooking']->toArray());
+        // return $this->booking_month ;
         return view('page.home')
         ->with('title', $this->title )
-        ->with('data',$this->data ) ;
+        ->with('data_booking',$this->booking )
+        ->with('data_booking_month',$this->booking_month) ;
     }
 
 

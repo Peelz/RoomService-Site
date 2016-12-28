@@ -34,7 +34,7 @@ class User extends Authenticatable
          return $this->password;
      }
      public function getFullNameAttribute(){
-         return ucfirst($this->firstname) . ' ' . ucfirst($this->lastname);
+         return $this->firstname.' '.$this->lastname;
      }
 
 

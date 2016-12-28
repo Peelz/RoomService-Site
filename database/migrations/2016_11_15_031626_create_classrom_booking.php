@@ -14,7 +14,7 @@ class CreateClassromBooking extends Migration
             $table->increments('entity_id');
             $table->unsignedInteger('user_id') ;
             $table->string('room_id') ;
-            $table->integer('subject_id') ;
+            $table->unsignedInteger('section_id')->nullable() ;
             $table->unsignedInteger('quan_nisit');
             $table->date('date');
             $table->time('start_time') ;
@@ -36,7 +36,7 @@ class CreateClassromBooking extends Migration
 
             $table->foreign('user_id')->references('entity_id')->on('user_entity')->onDelete('cascade');
             $table->foreign('room_id')->references('room_id')->on('classroom_entity')->onDelete('cascade') ;
-            $table->foreign('subject_id')->references('entity_id')->on('subject_entity')->onDelete('cascade');
+            $table->foreign('section_id')->references('section_id')->on('subject_sec')->onDelete('cascade');
         });
     }
 

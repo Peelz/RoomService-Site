@@ -83,7 +83,7 @@ trait BookingAndChecking
 
     public function prepareListBookingData($id){
 
-        return \App\Models\User::find($id)->booking ;
+        return \App\Models\User::find($id)->booking()->paginate(15) ;
     }
 
     public function checkRoomIsEmpty($req){

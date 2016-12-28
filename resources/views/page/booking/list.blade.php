@@ -36,6 +36,7 @@
                 <div class="content" >
                     <div class="ui segment">
                         <h2 class="ui header"><i class="configure icon"></i>แก้ไข/ยกเลิก</h2>
+                        <span class="ui right floated"> จำนวนการจองทั้งหมด <b>{{ $data['booking']->total() }}</b> คร้้ง </span>
                         <table class="ui celled table" style="text-align:center;">
                             <thead >
                                 <tr>
@@ -58,12 +59,12 @@
                                             <td> {{$key+1}} </td>
                                             <td>{{ $booking->time }}</td>
                                             <td>{{ $booking->date }}</td>
-                                            @if(is_null($booking->subject))
+                                            @if(is_null($booking->section ))
                                                 <td> - </td>
                                                 <td> - </td>
                                             @else
-                                                <td>{{ $booking->subject->subject_id }}</td>
-                                                <td>{{ $booking->subject->subject_name }}</td>
+                                                <td>{{ $booking->section->subject->subject_id }}</td>
+                                                <td>{{ $booking->section->subject->subject_name }}</td>
                                             @endif
                                             <td>{{ $booking->room_name}}</td>
                                             <td>{{ $booking->note }}</td>
@@ -76,6 +77,22 @@
                                 @endif
 
                             </tbody>
+
+                            @if( $data['booking']->total() > $data['booking']->perPage() )
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="9">
+                                          <div class="ui right floated pagination menu">
+                                            <a class="icon item" href="{{ $data['booking']->previousPageUrl() }}"><i class="left chevron icon"></i> </a>
+                                              @for($i=1; $i <= $data['booking']->lastPage() ; $i++)
+                                                  <a href=" {{ url('booking/list/?page=').$i }}" class="item {{ $i==$data['booking']->currentPage()? "active":"" }}"> {{ $i }}</a>
+                                              @endfor
+                                            <a class="icon item" href="{{ $data['booking']->nextPageUrl() }}"><i class="right chevron icon"></i></a>
+                                          </div>
+                                        </th>
+                                    </tr>
+                                </tfoot>
+                            @endif
                         </table>
                     </div>
                 </div>

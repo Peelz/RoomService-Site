@@ -9,7 +9,7 @@ class RoomBooking extends Model
     protected $table = 'classroom_booking' ;
 
     protected $fillable = [
-        'id',
+        'entity_id',
         'sec',
         'quan_nisit',
         'note',
@@ -25,6 +25,10 @@ class RoomBooking extends Model
 
     public function subject(){
         return $this->hasOne('\App\Models\Subject','entity_id','subject_id');
+    }
+
+    public function section(){
+        return $this->hasOne('\App\Models\SubjectSection','section_id','section_id');
     }
 
     public function room(){

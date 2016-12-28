@@ -65,18 +65,17 @@
     			<div class="ui container" id="main-container">
     				<div class="content" >
     					<div class="ui segment">
-    						<form action="{{ url('booking/create')}}" method="post" class="ui form" id="booking-form">
+    						<form action="{{ url('booking/update/'.$booking->entity_id) }}" method="post" class="ui form" id="booking-form">
                                 {{ csrf_field() }}
 
     							<h2 class="ui header"><i class="building icon"></i>ขอใช้ห้องแล็บ</h2>
     							<table class="ui definition table" >
     							  	<tbody >
-
     									<tr>
     									  <td>วิชา</td>
     									  <td>
                                               <div class="ui input disabled" id="subject-input">
-                                                    <input type="text" value="{{$booking->subject->subject_name}}" >
+                                                    <input type="text" value="{{$booking->section->subject->subject_name}}" >
                                               </div>
                                           </td>
     									</tr>
@@ -85,8 +84,8 @@
     									  <td>หมู่เรียน</td>
     									  <td>
 
-                                              <div class="ui input" id="section-input">
-                                                    <input type="text" value="{{$booking->sec}}" >
+                                              <div class="ui input disabled" id="section-input">
+                                                    <input type="text" value="{{$booking->section->sec}}" >
                                               </div>
                                           </td>
     									</tr>
@@ -94,7 +93,7 @@
     									  <td>ผู้สอน</td>
     									  <td>
                                               <div class="ui input disabled" id="instructor-input">
-                                                  <input type="hidden" name="instructor" >
+                                                  <input type="text" name="instructor" value="{{ $booking->section->instructor->full_name }}" >
                                               </div>
                                           </td>
     									</tr>
@@ -108,7 +107,7 @@
     										<td>จำนวนคน</td>
     										<td>
                                                 <div class="ui right labeled input">
-    												  <input type="text" name="quantity_nisit" placeholder="">
+    												  <input type="text" name="quantity_nisit" value="{{ $booking->quan_nisit}}">
     												  <div class="ui label">
     													  คน
     													</div>
@@ -119,7 +118,7 @@
     										<td>วันที่</td>
     										<td>
                                                 <div class="ui icon input">
-    											<input id="date" type="text" name="date" >
+    											<input id="date" type="text" name="date" value=" {{ $booking->date}}" >
     											<i class="calendar Outline icon"></i>
 
     										    </div>
@@ -179,7 +178,7 @@
     									  <td>ห้องเรียน</td>
     									  <td>
                                               <div class="ui input" id="room-input">
-                                                  <input type="text" name="room" value="">
+                                                  <input type="text" name="room" value="{{$booking->room_id}}">
                                               </div>
                                           </td>
     									</tr>
@@ -193,19 +192,17 @@
 
     								</tbody>
     							</table>
-                                <button class="ui button" type="button" id="checking">ตรวจสอบ </button>
+                                <button class="ui blue button" type="button" id="checking">ตรวจสอบ </button>
                                 <div class="alert-box">
 
                                 </div>
                                 <div class="option">
                                     <div class="ui grid">
-                                        <div class="row">
-                                            <div class="one wide column">
-                                            </div>
-                                        <div class="two wide column">
-                                            <p>อุปกรณ์พื้นฐาน : </p><br><br><br><br><br><br><br><br><br><p>อุปกรณ์อื่นๆ : </p>
+                                        <div class="four wide column">
+                                            <p>อุปกรณ์พื้นฐาน :</p>
                                         </div>
-                                        <div class="five wide column">
+
+                                        <div class="six wide column">
                                             <div class="ui checked checkbox ">
                                                   <input type="checkbox" checked="" name="opt_computer">
                                                   <label>เครื่องคอมพิวเตอร์</label>
@@ -222,12 +219,8 @@
                                                   <input type="checkbox" checked="" name="opt_vga_cable">
                                                   <label>สายต่อ Notebook-LCD</label>
                                             </div><br><br><br>
-                                            <div class="ui checkbox"
-                                                  <input type="checkbox" checked="" name="ex_opt_wireless_microphone">
-                                                  <label>ไมโครโฟนไร้สายแบบมือถือ</label>
-                                            </div>
                                         </div>
-                                        <div class="five wide column">
+                                        <div class="six wide column">
                                             <div class="ui checkbox checked">
                                               <input type="checkbox" checked="" name="opt_projector">
                                               <label>เครื่องฉายภาพ LCD</label>
@@ -241,25 +234,33 @@
                                               <label>เครื่องขยายเสียงพร้อมไมโครโฟน</label>
                                             </div>
                                         </div>
-                                        </div>
                                     </div>
                                     <div class="ui grid">
-                                        <div class="row">
-                                            <div class="one wide column">
-                                            </div>
-                                            <div class="two wide column">
-                                                <p>เพิ่มเติม : </p>
-                                            </div>
-                                            <div class="nine wide column">
-                                                <div class="ui form">
-                                                  <div class="field">
-                                                    <textarea rows="2" name="opt_note"></textarea>
-                                                  </div>
-                                                </div>
+                                        <div class="four wide column">
+                                            <p>อุปกรณ์อื่นๆ :</p>
+                                        </div>
+                                        <div class="six wide column">
+                                            <div class="ui checkbox">
+                                                  <input type="checkbox" checked="" name="ex_opt_wireless_microphone">
+                                                  <label>ไมโครโฟนไร้สายแบบมือถือ</label>
                                             </div>
                                         </div>
+
                                     </div>
-                                    <button class="ui button" type="submit">ยืนยัน</button>
+                                    <div class="ui grid">
+                                        <div class="four wide column">
+                                            <p>เพิ่มเติม : </p>
+                                        </div>
+                                        <div class="six wide column">
+                                            <div class="ui form">
+                                              <div class="field">
+                                                <textarea rows="2" name="opt_note"></textarea>
+                                              </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <button class="ui positive button" type="submit">ยืนยัน</button>
                                 </div>
 				    	</div>
 
